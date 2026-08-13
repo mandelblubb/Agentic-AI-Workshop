@@ -1,0 +1,18 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "aihub": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Firmeneigener AIHub",
+      "options": {
+        "baseURL": "<AIHUB_BASE_URL>",
+        "apiKey": "{env:AIHUB_API_KEY}"
+      },
+      "models": {
+        "<AIHUB_MODEL_NAME>": {
+          "name": "<Anzeigename fuer das Modell>"
+        }
+      }
+    }
+  }
+}
