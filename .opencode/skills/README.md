@@ -1,6 +1,6 @@
-# Skill-Starter (Spur B)
+# Skill-Starter (Gruppe B)
 
-Minimales Startgerüst für Teilnehmende, die in der freien Workshop-Spur einen
+Minimales Startgerüst für Teilnehmende, die in der freien Workshop-Gruppe einen
 eigenen OpenCode Skill für die Convention App bauen wollen.
 
 **Skills sind kein Command.** Ein Skill wird nicht per `/befehl` aufgerufen,

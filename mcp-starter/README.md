@@ -1,6 +1,6 @@
-# MCP-Starter (Spur B)
+# MCP-Starter (Gruppe B)
 
-Startgerüst für Teilnehmende, die in der freien Workshop-Spur einen eigenen
+Startgerüst für Teilnehmende, die in der freien Workshop-Gruppe einen eigenen
 MCP-Server für die Convention App bauen wollen — statt bei einem leeren
 Blatt anzufangen.
 
@@ -26,11 +26,15 @@ direkt in der Komplett-Version.
    ```bash
    pip install -r requirements.txt
    ```
-3. Server lokal testen (öffnet den MCP-Inspector im Browser):
+3. Setup testen (öffnet den MCP-Inspector im Browser):
+   ```bash
+   mcp dev server_komplett.py
+   ```
+   Bewusst die Komplett-Version: `server_template.py` lässt sich mit den
+   offenen TODOs noch nicht starten (`mcp` ist dort `None`). Sobald ihr sie
+   ausgefüllt habt, funktioniert auch:
    ```bash
    mcp dev server_template.py
-   # oder, nach Vergleich mit der Lösung:
-   mcp dev server_komplett.py
    ```
 
 ## Eigene Tools ergänzen

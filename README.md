@@ -19,28 +19,40 @@ Eine Veranstaltung besitzt:
 
 Im Verlauf des Workshops wird die Anwendung schrittweise durch einen Coding Agenten erweitert.
 
-## Zwei Spuren
+## Zwei Gruppen
 
-Der Workshop läuft in zwei parallelen Spuren, je nach technischer Erfahrung:
+Der Workshop läuft in zwei parallelen Gruppen, je nach technischer Erfahrung:
 
-- **Spur A – geführt:** Vorgegebene Tickets unter `issues/` schrittweise mit dem
+- **Gruppe A – App bauen (geführt):** Vorgegebene Tickets unter `issues/` schrittweise mit dem
   Coding Agenten umsetzen (siehe "Workshop-Ablauf" unten). Empfohlen für
   Teilnehmende mit weniger CLI-/Agenten-Erfahrung. Dient außerdem als
-  Fallback-Demo (per Beamer), falls Spur B bei einzelnen Gruppen nicht
+  Fallback-Demo (per Beamer), falls Gruppe B bei einzelnen Gruppen nicht
   vorankommt.
-- **Spur B – frei:** Eigene OpenCode Custom Commands, Skills und einen
-  eigenen MCP-Server für die Anwendung entwickeln, ausgehend von den
-  Startgerüsten in `.opencode/commands/` (Custom Commands),
-  `.opencode/skills/` (Skills) und `mcp-starter/` (MCP-Server). Empfohlen für
-  technisch erfahrene Teilnehmende. Custom Commands und Skills sind
-  niedrigschwelliger und eignen sich als Einstieg, bevor man sich an den
-  MCP-Server wagt.
+- **Gruppe B – Werkzeuge bauen (frei):** Den Coding Agenten selbst erweitern. Es gibt fünf Wege,
+  für jeden ein lauffähiges Startgerüst:
+
+  | Weg | Startgerüst | Aufwand |
+  |-----|-------------|---------|
+  | Custom Command — ihr ruft `/name` auf | `.opencode/commands/` | gering |
+  | Skill — der Agent lädt ihn selbst | `.opencode/skills/` | gering |
+  | Subagent — zweiter Kopf mit eigenen Rechten | `.opencode/agents/` | mittel |
+  | Plugin — reagiert auf Ereignisse, ohne das Modell | `.opencode/plugins/` | mittel |
+  | MCP-Server — neue Werkzeuge für den Agenten | `mcp-starter/` | hoch |
+
+  Empfohlen für technisch erfahrene Teilnehmende. Commands und Skills sind
+  niedrigschwellig und eignen sich als Einstieg; der MCP-Server ist die
+  anspruchsvollste Stufe.
+
+  Leere Vorlagen für alle sechs Wege — zum Mitnehmen ins eigene Projekt —
+  liegen unter `templates/`.
 
 Bei individuellen technischen Problemen: Pairing mit einer/einem Teilnehmenden,
-bei der/dem es läuft — unabhängig von der Spur.
+bei der/dem es läuft — unabhängig von der Gruppe.
 
 **Vor dem Termin:** Setup anhand von `docs/SETUP_CHECKLIST.md` prüfen.
 **Ablauf im Detail:** siehe `docs/AGENDA.md`.
+**Während des Workshops:** Prompts zum Kopieren stehen in `docs/PROMPTS.md`,
+Begriffe in `docs/GLOSSAR.md`.
 
 ## Voraussetzungen
 
@@ -48,8 +60,10 @@ bei der/dem es läuft — unabhängig von der Spur.
 - Git
 - Terminal
 - Coding Agent: OpenCode (Open Source, im Polizeikontext zugelassenes Werkzeug)
-- VPN-Zugang zum internen Netz
-- Zugriff auf den firmeneigenen AIHub (LLM-Zugang inkl. Budget wird gestellt)
+- Node.js/npm (wird von OpenCode benötigt)
+- Zugang zum firmeneigenen AIHub (LLM-Zugang inkl. Budget wird gestellt) —
+  der API-Key wird zu Beginn des Workshops verteilt, ihr müsst vorab nichts
+  beantragen. Ein VPN ist nicht nötig.
 
 ## OpenCode mit dem AIHub verbinden
 
@@ -58,25 +72,44 @@ cp opencode.json.example opencode.json
 ```
 
 In `opencode.json` `<AIHUB_BASE_URL>` und `<AIHUB_MODEL_NAME>` mit den
-Werten aus der Setup-Anleitung eintragen. Den API-Key **nicht** direkt in
-die Datei schreiben, sondern als Umgebungsvariable setzen:
+Werten aus der Setup-Anleitung eintragen — das geht schon vorab. Den API-Key
+bekommt ihr zu Beginn des Workshops; er kommt **nicht** in die Datei, sondern
+in eine Umgebungsvariable:
 
 ```bash
 export AIHUB_API_KEY="euer-key"        # Linux/macOS
 $env:AIHUB_API_KEY = "euer-key"        # Windows PowerShell
 ```
 
+Die Variable gilt nur im aktuellen Terminal — setzt sie in demselben
+Terminal, aus dem ihr `opencode` startet. Ein Auth-Fehler trotz korrektem Key
+hat meist genau diese Ursache.
+
 `opencode.json` ist in `.gitignore` eingetragen und wird nicht committet —
 nur `opencode.json.example` (ohne echte Werte) ist Teil des Repos.
+
+**Falls ihr OpenCode schon vorher benutzt habt:** Eine bereits vorhandene
+globale Konfiguration gewinnt gegen die `opencode.json` im Projekt — OpenCode
+nimmt dann weiter euer altes Modell. Der Fehler sieht aus wie ein
+Zugangsproblem (`team not allowed to access model`), ist aber keines. Modell
+in dem Fall beim Aufruf erzwingen:
+
+```bash
+opencode run -m aihub/<AIHUB_MODEL_NAME> "..."
+```
 
 ## Installation
 
 ### Variante A: mit `uv`
 
 ```bash
-uv sync
+uv sync --extra dev
 uv run pytest
 ```
+
+Das `--extra dev` ist nötig: `uv sync` allein installiert nur die
+Hauptabhängigkeiten, nicht `pytest` und `httpx2`. Ohne das Flag meldet
+`uv sync` erfolgreich — und `uv run pytest` scheitert erst danach.
 
 ### Variante B: mit `pip`
 
@@ -116,10 +149,11 @@ Danach:
 
 ## Workshop-Ablauf
 
-Zu Beginn erfolgt die Einteilung in Spur A oder Spur B (siehe "Zwei Spuren").
-Die folgenden Runden beschreiben **Spur A**. Für **Spur B** direkt mit
-`.opencode/commands/README.md` (Custom Commands), `.opencode/skills/README.md`
-(Skills) und/oder `mcp-starter/README.md` (MCP-Server) starten.
+Zu Beginn erfolgt die Einteilung in Gruppe A oder Gruppe B (siehe "Zwei Gruppen").
+Die folgenden Runden beschreiben **Gruppe A**. Für **Gruppe B** direkt mit einem
+der Starter-READMEs beginnen: `.opencode/commands/README.md`,
+`.opencode/skills/README.md`, `.opencode/agents/README.md`,
+`.opencode/plugins/README.md` oder `mcp-starter/README.md`.
 
 ### Runde 1
 
@@ -134,15 +168,22 @@ Gib dem Coding Agenten beispielsweise diesen Auftrag:
 ```text
 Lies AGENTS.md und issues/ISSUE-01-registration.md.
 
-Analysiere zunächst das Repository und die bestehende Architektur.
-Erstelle einen kurzen Implementierungsplan, bevor du Dateien änderst.
+Analysiere zuerst Architektur und bestehende Tests.
+Erstelle einen kurzen Plan und ändere bis dahin keine Dateien.
 
-Implementiere anschließend das Issue vollständig.
-Ergänze sinnvolle Tests, führe alle Tests aus und behebe auftretende Fehler.
-
-Prüfe am Ende deine eigenen Änderungen gegen die Akzeptanzkriterien
-und fasse Änderungen und verbleibende Risiken zusammen.
+Implementiere danach das Issue vollständig.
+Ergänze sinnvolle Tests, führe alle Tests aus und behebe Fehler.
+Prüfe abschließend git diff und alle Akzeptanzkriterien.
+Nenne mögliche Restrisiken.
 ```
+
+Weitere Prompt-Muster — Repository verstehen, zweiter Agent als Reviewer,
+Test zuerst, Aufgabe kleiner schneiden — stehen in `docs/PROMPTS.md`.
+
+Unter Windows kann dabei die Meldung `Das Token "&&" ist kein gültiges
+Anweisungstrennzeichen` auftauchen — PowerShell 5.1 kennt `&&` nicht. Der
+Agent bemerkt das selbst und wiederholt den Befehl. Lasst ihn machen und
+schaut zu, wie er sich fängt; das ist einer der Momente, um die es hier geht.
 
 ### Runde 2
 

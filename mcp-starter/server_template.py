@@ -1,4 +1,4 @@
-"""Template: MCP-Server fuer Spur B (freie Entwicklung).
+"""Template: MCP-Server fuer Gruppe B (Werkzeuge bauen).
 
 Fuellt die TODOs aus, um einen MCP-Server zu bauen, der gegen die laufende
 Workshop-API (uvicorn src.api:app) spricht. Vergleicht euer Ergebnis danach

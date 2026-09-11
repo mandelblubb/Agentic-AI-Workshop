@@ -1,0 +1,61 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+
+  "provider": {
+    "<provider-id>": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "<Anzeigename des Anbieters>",
+      "options": {
+        "baseURL": "<https://host/v1>",
+        "apiKey": "{env:<NAME_DER_UMGEBUNGSVARIABLE>}"
+      },
+      "models": {
+        "<modellname-genau-wie-beim-anbieter>": {
+          "name": "<Anzeigename des Modells>"
+        }
+      }
+    }
+  },
+
+  "mcp": {
+    "<name-des-lokalen-servers>": {
+      "type": "local",
+      "command": ["python", "server.py"],
+      "cwd": "<pfad/zum/serververzeichnis>",
+      "environment": {
+        "<VARIABLE>": "<wert>"
+      },
+      "enabled": true,
+      "timeout": 5000
+    },
+    "<name-des-remote-servers>": {
+      "type": "remote",
+      "url": "<https://mcp.example.com>",
+      "headers": {
+        "Authorization": "Bearer {env:<NAME_DER_UMGEBUNGSVARIABLE>}"
+      },
+      "enabled": false,
+      "timeout": 5000
+    }
+  },
+
+  "agent": {
+    "<name-des-subagenten>": {
+      "description": "<wofür er da ist>",
+      "mode": "subagent",
+      "permission": {
+        "edit": "deny"
+      }
+    }
+  },
+
+  "permission": {
+    "edit": "allow",
+    "bash": "ask"
+  },
+
+  "instructions": [
+    "AGENTS.md",
+    "docs/konventionen.md"
+  ]
+}

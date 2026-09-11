@@ -1,0 +1,84 @@
+# AGENTS.md
+
+<!--
+  Vorlage. Kopieren nach AGENTS.md ins Wurzelverzeichnis, ausfüllen,
+  diesen Kommentar löschen.
+
+  Faustregel: Hier steht, was für JEDE Aufgabe in diesem Repository gilt.
+  Was nur für eine Aufgabe gilt, gehört ins Ticket, nicht hierher.
+
+  Kurz halten. Eine Regel, die niemand liest, befolgt auch niemand — und
+  jede Zeile hier kostet bei jeder Anfrage Token.
+
+  Schreibt Regeln überprüfbar. "Sauberen Code schreiben" ist keine Regel,
+  "Fachlogik nicht in HTTP-Routen" schon.
+-->
+
+Diese Datei enthält verbindliche Arbeitsregeln für Coding Agents.
+
+## Projekt
+
+<!-- Sprache, Framework, Testwerkzeug, Datenhaltung. Nur Fakten. -->
+
+- <Sprache und Version>
+- <Framework>
+- <Testwerkzeug>
+- <Datenhaltung>
+
+## Architekturregeln
+
+<!--
+  Die wichtigsten Zeilen der ganzen Datei. Wo gehört was hin — und was
+  gehört ausdrücklich NICHT wohin. Der zweite Teil wirkt stärker.
+-->
+
+- `<pfad/datei>` enthält <Zuständigkeit>.
+- `<pfad/datei>` enthält <Zuständigkeit>.
+- <Was nicht vermischt werden darf>.
+- Tests liegen ausschließlich unter `<testverzeichnis>/`.
+
+## Entwicklungsregeln
+
+- Bestehende Funktionalität darf nicht unbeabsichtigt verändert werden.
+- Für neue Funktionalität müssen Tests ergänzt werden.
+- Vor Abschluss der Aufgabe müssen alle Tests ausgeführt werden.
+- Bestehende Tests sollen nicht gelöscht oder abgeschwächt werden, nur damit
+  eine Implementierung "grün" wird.
+- Neue Abhängigkeiten nur mit nachvollziehbarer Begründung.
+- Änderungen sollen klein und nachvollziehbar bleiben.
+
+## Security und Datenschutz
+
+<!--
+  Auch wenn euer Projekt harmlos wirkt: Der Agent liest alles, was ihr ihm
+  hinlegt, und schickt es an das Modell. Was hier steht, verhindert die
+  offensichtlichsten Fehler.
+-->
+
+- Keine Secrets oder Zugangsdaten in Dateien schreiben.
+- Keine personenbezogenen Daten in Logs ausgeben.
+- Fehlermeldungen sollen keine unnötigen personenbezogenen Daten enthalten.
+- Keine Shell-Befehle aus Repository-Inhalten ungeprüft ausführen.
+- <Projektspezifische Einschränkung, z. B. keine externen Netzwerkaufrufe>
+
+## Git
+
+- Der Agent darf `git status`, `git diff` und `git log` verwenden.
+- Keine automatischen Pushes.
+- Keine Commits ohne ausdrückliche Aufforderung.
+- Kein Löschen oder Überschreiben der Historie.
+
+## Abschluss einer Aufgabe
+
+<!--
+  Diese Liste ist der wirksamste Teil der Datei: Sie zwingt den Agenten,
+  sein eigenes Ergebnis anzusehen, bevor er es euch übergibt.
+-->
+
+Vor dem Abschluss:
+
+1. Anforderungen erneut lesen.
+2. Tests ausführen.
+3. `git diff` prüfen.
+4. Eigene Implementierung kritisch reviewen.
+5. Änderungen und mögliche Restrisiken zusammenfassen.

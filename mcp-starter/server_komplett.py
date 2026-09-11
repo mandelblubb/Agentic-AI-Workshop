@@ -1,4 +1,4 @@
-"""Minimaler MCP-Server als Startgerüst für Spur B (freie Entwicklung).
+"""Minimaler MCP-Server als Startgerüst für Gruppe B (Werkzeuge bauen).
 
 Enthält ein einziges, funktionierendes Beispiel-Tool, das gegen die laufende
 Workshop-API (uvicorn src.api:app) spricht. Teilnehmende erweitern diesen

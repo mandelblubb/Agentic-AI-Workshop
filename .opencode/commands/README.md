@@ -1,6 +1,6 @@
-# Command-Starter (Spur B)
+# Command-Starter (Gruppe B)
 
-Minimales Startgerüst für Teilnehmende, die in der freien Workshop-Spur einen
+Minimales Startgerüst für Teilnehmende, die in der freien Workshop-Gruppe einen
 eigenen OpenCode Custom Command für die Convention App bauen wollen.
 
 Custom Commands sind explizit per `/befehlsname` aufrufbare, gespeicherte

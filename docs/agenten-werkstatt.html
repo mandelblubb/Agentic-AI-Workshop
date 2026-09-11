@@ -1,0 +1,1611 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--A-->
+<title>Agenten-Werkstatt</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+:root {
+  --ground:      #DFE1DC;
+  --panel:       #F2F3EF;
+  --panel-2:     #E7E9E3;
+  --ink:         #191C18;
+  --ink-2:       #4E554C;
+  --ink-3:       #7B827A;
+  --rule:        #C2C7BE;
+  --rule-strong: #9AA197;
+  --signal:      #B8850F;
+  --signal-fill: #E3A81C;
+  --signal-soft: #F6E7BE;
+  --pass:        #2C6E49;
+  --fail:        #A62C25;
+  --code-bg:     #1E211D;
+  --code-ink:    #DDE2D8;
+  --code-dim:    #8D958A;
+  --shadow:      0 1px 0 rgba(25,28,24,.06);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground:      #15181A;
+    --panel:       #1D2124;
+    --panel-2:     #24292C;
+    --ink:         #E4E8E4;
+    --ink-2:       #A6AEAA;
+    --ink-3:       #79817E;
+    --rule:        #333A3D;
+    --rule-strong: #4C5457;
+    --signal:      #F0B429;
+    --signal-fill: #F0B429;
+    --signal-soft: #3A2E11;
+    --pass:        #5FBF8B;
+    --fail:        #E1685E;
+    --code-bg:     #0E1113;
+    --code-ink:    #D5DBD3;
+    --code-dim:    #767E79;
+    --shadow:      0 1px 0 rgba(0,0,0,.35);
+  }
+}
+
+:root[data-theme="dark"] {
+  --ground:      #15181A;
+  --panel:       #1D2124;
+  --panel-2:     #24292C;
+  --ink:         #E4E8E4;
+  --ink-2:       #A6AEAA;
+  --ink-3:       #79817E;
+  --rule:        #333A3D;
+  --rule-strong: #4C5457;
+  --signal:      #F0B429;
+  --signal-fill: #F0B429;
+  --signal-soft: #3A2E11;
+  --pass:        #5FBF8B;
+  --fail:        #E1685E;
+  --code-bg:     #0E1113;
+  --code-ink:    #D5DBD3;
+  --code-dim:    #767E79;
+  --shadow:      0 1px 0 rgba(0,0,0,.35);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: Archivo, "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 24px 64px; }
+
+/* ---------- Kopf ---------- */
+
+.masthead {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 20px;
+  padding: 32px 0 20px;
+  border-bottom: 2px solid var(--ink);
+}
+.masthead h1 {
+  margin: 0;
+  font-size: clamp(28px, 3.4vw, 40px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+.masthead p {
+  margin: 0; max-width: 56ch;
+  color: var(--ink-2); font-size: 15px;
+}
+
+/* ---------- Modulumschalter ---------- */
+
+nav.navgroups {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1.15fr;
+  gap: 1px;
+  background: var(--rule-strong);
+  border: 1px solid var(--rule-strong);
+  border-top: none;
+}
+.navgroup { background: var(--panel); padding: 10px 12px 12px; min-width: 0; }
+.navgroup .gtitle {
+  margin: 0 0 8px;
+  font-size: 13px; font-weight: 600; color: var(--ink-2);
+  display: flex; align-items: baseline; gap: 7px;
+}
+.navgroup .gnum {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 11.5px; font-weight: 500;
+  color: var(--ink); background: var(--signal-soft);
+  border: 1px solid var(--signal); padding: 0 5px;
+}
+.navgroup .tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.navgroup button {
+  appearance: none; font: inherit; font-weight: 500; font-size: 14.5px;
+  background: transparent; color: var(--ink-2);
+  border: 1px solid var(--rule-strong);
+  padding: 7px 13px; cursor: pointer; text-align: left;
+  transition: background .12s linear, color .12s linear;
+}
+.navgroup button:hover { background: var(--panel-2); color: var(--ink); }
+.navgroup button[aria-selected="true"] {
+  background: var(--ink); color: var(--ground); border-color: var(--ink);
+}
+
+/* ---------- Module allgemein ---------- */
+
+section.module { padding-top: 28px; }
+section.module > .lede {
+  margin: 0 0 22px; max-width: 66ch;
+  color: var(--ink-2); font-size: 15.5px;
+}
+h2.mod-title {
+  margin: 0 0 4px;
+  font-size: 22px; font-weight: 600; letter-spacing: -0.01em;
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  box-shadow: var(--shadow);
+}
+
+pre, code, .mono {
+  font-family: "IBM Plex Mono", ui-monospace, "Courier New", monospace;
+}
+
+/* ---------- Modul 0: Wegweiser ---------- */
+
+.mapfilter { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
+.mapfilter button {
+  appearance: none; font: inherit; font-size: 14px; cursor: pointer;
+  background: transparent; color: var(--ink);
+  border: 1px solid var(--rule-strong); padding: 7px 15px;
+}
+.mapfilter button:hover { background: var(--panel); }
+.mapfilter button[aria-pressed="true"] {
+  background: var(--ink); color: var(--ground); border-color: var(--ink);
+}
+
+.mapgroup { margin-bottom: 26px; }
+.mapgroup > h3 {
+  margin: 0 0 2px; font-size: 15px; font-weight: 600;
+  padding-bottom: 6px; border-bottom: 2px solid var(--ink);
+}
+.mapgroup ul { list-style: none; margin: 0; padding: 0; }
+.mapgroup li {
+  display: grid;
+  grid-template-columns: minmax(0, 15rem) minmax(0, 1fr) auto;
+  gap: 6px 20px; align-items: baseline;
+  padding: 9px 4px;
+  border-bottom: 1px solid var(--rule);
+}
+.mapgroup li[hidden] { display: none; }
+.mapgroup .mpath {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 13.5px; color: var(--ink); overflow-wrap: anywhere;
+}
+.mapgroup .mwhat { font-size: 14.5px; color: var(--ink-2); }
+.mapgroup .mtag {
+  font-size: 12px; white-space: nowrap; flex: none;
+  border: 1px solid var(--rule-strong); padding: 1px 7px; color: var(--ink-3);
+}
+.mapgroup .mtag.a, .mapgroup .mtag.b { border-color: var(--signal); color: var(--ink); background: var(--signal-soft); }
+.mapgroup .mtag.take { border-color: var(--pass); color: var(--pass); }
+
+.startgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px; margin-top: 34px; }
+.startcol { border: 1px solid var(--rule-strong); background: var(--panel); padding: 18px 20px 20px; }
+.startcol h3 {
+  margin: 0 0 14px; font-size: 15px; font-weight: 600;
+  display: flex; align-items: baseline; gap: 8px;
+}
+.startcol ol { margin: 0; padding-left: 1.3em; display: flex; flex-direction: column; gap: 9px; }
+.startcol li { font-size: 14.5px; color: var(--ink-2); line-height: 1.5; }
+.startcol li b { color: var(--ink); font-weight: 600; }
+.startcol code {
+  font-size: 12.5px; background: var(--panel-2);
+  border: 1px solid var(--rule); padding: 1px 5px;
+}
+
+/* ---------- Modul 1: Schleife ---------- */
+
+.rail {
+  display: flex; gap: 0;
+  border: 1px solid var(--rule-strong);
+  background: var(--panel);
+  overflow-x: auto;
+  margin-bottom: 20px;
+}
+.rail button {
+  appearance: none; background: transparent; border: none;
+  border-right: 1px solid var(--rule);
+  font: inherit; color: var(--ink-3);
+  padding: 10px 12px 11px;
+  cursor: pointer; white-space: nowrap;
+  display: flex; align-items: center; gap: 8px;
+  flex: 1 0 auto;
+  transition: background .12s linear;
+}
+.rail button:last-child { border-right: none; }
+.rail button .dot {
+  width: 9px; height: 9px; flex: none;
+  border: 1.5px solid var(--rule-strong);
+  border-radius: 50%;
+  background: transparent;
+}
+.rail button .lbl {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 12px;
+}
+.rail button:hover { background: var(--panel-2); color: var(--ink-2); }
+.rail button.done { color: var(--ink-2); }
+.rail button.done .dot { background: var(--rule-strong); border-color: var(--rule-strong); }
+.rail button.current { color: var(--ink); background: var(--signal-soft); }
+.rail button.current .dot { background: var(--signal-fill); border-color: var(--signal); }
+
+.stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  gap: 0;
+  border: 1px solid var(--rule);
+  background: var(--panel);
+}
+.stage > .act { padding: 22px 24px 24px; min-width: 0; }
+.stage > .ctx {
+  padding: 22px 20px 24px;
+  border-left: 1px solid var(--rule);
+  background: var(--panel-2);
+  min-width: 0;
+}
+
+.step-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 4px; }
+.step-head .idx {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 13px; color: var(--signal);
+  font-weight: 500;
+}
+.step-head h3 { margin: 0; font-size: 19px; font-weight: 600; letter-spacing: -0.01em; }
+.act > p.what { margin: 0 0 16px; color: var(--ink-2); max-width: 62ch; }
+
+.term {
+  background: var(--code-bg); color: var(--code-ink);
+  padding: 14px 16px;
+  font-size: 13px; line-height: 1.65;
+  overflow-x: auto;
+  white-space: pre;
+  margin: 0;
+}
+.term .c { color: var(--code-dim); }
+.term .ok { color: #7FCB9B; }
+.term .no { color: #F08A80; }
+.term .hi { color: #F0C551; }
+
+.ctx h4 {
+  margin: 0 0 12px; font-size: 13px; font-weight: 600;
+  color: var(--ink-2);
+}
+ul.files { list-style: none; margin: 0 0 16px; padding: 0; display: flex; flex-direction: column; gap: 3px; }
+ul.files li {
+  display: flex; justify-content: space-between; gap: 12px;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 12.5px;
+  padding: 3px 0;
+  border-bottom: 1px dotted var(--rule);
+  color: var(--ink-2);
+}
+ul.files li.fresh { color: var(--ink); }
+ul.files li.fresh b { font-weight: 500; }
+ul.files li span.k { color: var(--ink-3); font-variant-numeric: tabular-nums; flex: none; }
+ul.files li.fresh span.k { color: var(--signal); }
+
+.meter { margin-top: 4px; }
+.meter .bar {
+  height: 8px; background: var(--ground);
+  border: 1px solid var(--rule-strong);
+  overflow: hidden;
+}
+.meter .bar i {
+  display: block; height: 100%;
+  background: var(--signal-fill);
+  transition: width .32s cubic-bezier(.4,0,.2,1);
+}
+.meter .read {
+  display: flex; justify-content: space-between;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 12px; color: var(--ink-2); margin-top: 6px;
+  font-variant-numeric: tabular-nums;
+}
+
+.watch {
+  border: 1px solid var(--signal);
+  border-left-width: 4px;
+  background: var(--signal-soft);
+  padding: 16px 20px;
+  margin-top: 0;
+  border-top: none;
+}
+.watch h4 { margin: 0 0 4px; font-size: 14px; font-weight: 600; color: var(--ink); }
+.watch p { margin: 0; color: var(--ink); max-width: 78ch; font-size: 15px; }
+
+.controls {
+  display: flex; align-items: center; gap: 12px;
+  margin-top: 18px;
+}
+button.ctrl {
+  appearance: none;
+  background: var(--ink); color: var(--ground);
+  border: 1px solid var(--ink);
+  font: inherit; font-weight: 500;
+  padding: 8px 18px; cursor: pointer;
+}
+button.ctrl.ghost { background: transparent; color: var(--ink); }
+button.ctrl:hover:not(:disabled) { background: var(--signal-fill); border-color: var(--signal); color: #191C18; }
+button.ctrl:disabled { opacity: .35; cursor: default; }
+.controls .pos {
+  margin-left: auto;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 13px; color: var(--ink-2); font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Modul 2: Prompts ---------- */
+
+ol.prompts { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule-strong); }
+ol.prompts > li { border-bottom: 1px solid var(--rule); }
+ol.prompts button.row {
+  width: 100%; appearance: none; background: transparent; border: none;
+  font: inherit; text-align: left; cursor: pointer;
+  display: grid; grid-template-columns: 2.2rem minmax(0,1fr) auto;
+  gap: 16px; align-items: baseline;
+  padding: 14px 8px;
+  color: var(--ink);
+}
+ol.prompts button.row:hover { background: var(--panel); }
+ol.prompts .pn {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 13px; color: var(--signal); font-weight: 500;
+}
+ol.prompts .pt { font-weight: 600; font-size: 17px; letter-spacing: -0.01em; }
+ol.prompts .pw { display: block; color: var(--ink-2); font-size: 14.5px; font-weight: 400; margin-top: 2px; }
+ol.prompts .chev { color: var(--ink-3); font-size: 13px; font-family: "IBM Plex Mono", monospace; }
+ol.prompts .body { padding: 0 8px 22px 3.4rem; }
+ol.prompts .body[hidden] { display: none; }
+ol.prompts .body .copywrap { display: flex; align-items: flex-start; gap: 12px; }
+ol.prompts .body pre {
+  flex: 1 1 auto; min-width: 0;
+  background: var(--code-bg); color: var(--code-ink);
+  padding: 16px 18px; margin: 0;
+  font-size: 13.5px; line-height: 1.7;
+  overflow-x: auto; white-space: pre;
+}
+button.copy {
+  appearance: none; flex: none;
+  background: transparent; color: var(--ink);
+  border: 1px solid var(--rule-strong);
+  font: inherit; font-size: 13px;
+  padding: 7px 14px; cursor: pointer;
+}
+button.copy:hover { background: var(--ink); color: var(--ground); border-color: var(--ink); }
+button.copy.done { background: var(--pass); border-color: var(--pass); color: #fff; }
+ol.prompts .body .note { margin: 14px 0 0; color: var(--ink-2); max-width: 74ch; font-size: 15px; }
+ol.prompts .body .note b { color: var(--ink); font-weight: 600; }
+
+/* ---------- Modul 3: Sechs Wege ---------- */
+
+.chooser { display: grid; gap: 6px; margin-bottom: 24px; max-width: 78ch; }
+.chooser button {
+  appearance: none; text-align: left; font: inherit; font-size: 15px; cursor: pointer;
+  background: var(--panel); color: var(--ink);
+  border: 1px solid var(--rule-strong);
+  padding: 10px 15px;
+}
+.chooser button:hover { background: var(--panel-2); }
+.chooser button[aria-pressed="true"] {
+  background: var(--signal-soft); border-color: var(--signal);
+  box-shadow: inset 3px 0 0 var(--signal);
+}
+
+ul.ways { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule-strong); }
+ul.ways > li { border-bottom: 1px solid var(--rule); }
+ul.ways button.wrow {
+  width: 100%; appearance: none; background: transparent; border: none;
+  font: inherit; text-align: left; cursor: pointer; color: var(--ink);
+  padding: 13px 10px;
+  display: grid;
+  grid-template-columns: minmax(0, 15rem) minmax(0, 1fr) auto;
+  gap: 8px 20px;
+  align-items: baseline;
+  transition: background .14s linear;
+}
+ul.ways button.wrow:hover { background: var(--panel); }
+ul.ways li.hl > button.wrow { background: var(--signal-soft); box-shadow: inset 3px 0 0 var(--signal); }
+ul.ways .wname { font-size: 16.5px; font-weight: 600; letter-spacing: -0.01em; }
+ul.ways .wtrig { display: block; font-size: 13.5px; font-weight: 400; color: var(--ink-2); margin-top: 2px; }
+ul.ways .wfor { font-size: 15px; color: var(--ink-2); }
+ul.ways li.hl .wfor { color: var(--ink); }
+ul.ways .wmeta { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; flex: none; }
+ul.ways .wpath {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 12px; color: var(--ink-2);
+  background: var(--panel-2); border: 1px solid var(--rule); padding: 1px 6px;
+  white-space: nowrap;
+}
+ul.ways .wstart { font-size: 12.5px; color: var(--pass); white-space: nowrap; }
+ul.ways .wchev {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 13px; color: var(--ink-3);
+}
+ul.ways .wbody { padding: 0 10px 20px; }
+ul.ways .wbody[hidden] { display: none; }
+ul.ways .wbody .copywrap { display: flex; align-items: flex-start; gap: 12px; }
+ul.ways .wbody pre {
+  flex: 1 1 auto; min-width: 0;
+  background: var(--code-bg); color: var(--code-ink);
+  padding: 16px 18px; margin: 0;
+  font-size: 13px; line-height: 1.65;
+  overflow-x: auto; white-space: pre;
+}
+ul.ways .wfile { margin: 10px 0 0; font-size: 13.5px; color: var(--ink-3); }
+ul.ways .wfile code { font-size: 12.5px; color: var(--ink-2); }
+.effort { display: inline-flex; gap: 3px; vertical-align: middle; }
+.effort i { width: 7px; height: 12px; background: var(--rule-strong); display: block; }
+.effort i.on { background: var(--signal-fill); }
+p.footnote { margin: 22px 0 0; font-size: 14px; color: var(--ink-3); max-width: 74ch; }
+
+/* ---------- Modul 4: Kontext ---------- */
+
+.ctxgrid { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 28px; align-items: start; }
+
+.presets { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.presets button {
+  appearance: none; font: inherit; font-size: 14px; cursor: pointer;
+  background: transparent; color: var(--ink);
+  border: 1px solid var(--rule-strong); padding: 7px 14px;
+}
+.presets button:hover { background: var(--ink); color: var(--ground); border-color: var(--ink); }
+
+ul.picker { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule-strong); }
+ul.picker li { border-bottom: 1px solid var(--rule); }
+ul.picker label {
+  display: grid; grid-template-columns: auto minmax(0,1fr) auto;
+  gap: 12px; align-items: center;
+  padding: 9px 6px; cursor: pointer;
+}
+ul.picker label:hover { background: var(--panel); }
+ul.picker input { accent-color: var(--signal-fill); width: 15px; height: 15px; }
+ul.picker .fn {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 13.5px; overflow-wrap: anywhere;
+}
+ul.picker .tk {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 13px; color: var(--ink-2); font-variant-numeric: tabular-nums;
+}
+ul.picker .tag {
+  display: block; font-size: 12.5px; color: var(--ink-3);
+  font-family: Archivo, sans-serif; margin-top: 1px;
+}
+ul.picker li.warn .fn { color: var(--fail); }
+ul.picker li.warn .tag { color: var(--fail); }
+
+.readout { position: sticky; top: 16px; }
+.readout .big {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: clamp(34px, 5vw, 46px); font-weight: 500;
+  line-height: 1.05; letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.readout .big small { font-size: 15px; font-weight: 400; color: var(--ink-2); margin-left: 8px; letter-spacing: 0; }
+.readout .sub { color: var(--ink-2); font-size: 14px; margin: 2px 0 16px; }
+.readout .verdict {
+  border: 1px solid var(--rule-strong); background: var(--panel);
+  padding: 14px 16px; font-size: 15px; margin-top: 16px;
+}
+.readout .verdict.hot { border-color: var(--fail); background: var(--panel); }
+.readout .verdict.hot strong { color: var(--fail); }
+
+/* ---------- Modul 5: erst der Plan ---------- */
+
+.specgrid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 30px; align-items: start; }
+.specgrid h3 { margin: 0 0 10px; font-size: 16px; font-weight: 600; }
+.specgrid h3 + p.hint { margin: -6px 0 12px; font-size: 14px; color: var(--ink-3); }
+
+.vague {
+  border: 2px dashed var(--rule-strong);
+  background: transparent;
+  padding: 18px 20px;
+  margin-bottom: 26px;
+}
+.vague p {
+  margin: 0; font-size: 19px; line-height: 1.45;
+  letter-spacing: -0.01em; max-width: 42ch;
+}
+.vague .src { display: block; margin-top: 10px; font-size: 13px; color: var(--ink-3); letter-spacing: 0; line-height: 1.5; }
+
+ul.consequences { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule-strong); }
+ul.consequences li { border-bottom: 1px solid var(--rule); }
+ul.consequences button {
+  width: 100%; appearance: none; background: transparent; border: none;
+  font: inherit; text-align: left; cursor: pointer; color: var(--ink);
+  padding: 11px 8px; display: block;
+}
+ul.consequences button:hover { background: var(--panel); }
+ul.consequences button[aria-pressed="true"] {
+  background: var(--signal-soft);
+  box-shadow: inset 3px 0 0 var(--signal);
+}
+ul.consequences .cq { display: block; font-size: 15.5px; }
+ul.consequences .cb {
+  display: inline-block; margin-top: 5px;
+  font-size: 12.5px; color: var(--ink-2);
+  border: 1px solid var(--rule-strong); padding: 1px 7px;
+}
+ul.consequences button[aria-pressed="true"] .cb { border-color: var(--signal); color: var(--ink); }
+ul.consequences li.slip .cb { border-color: var(--fail); color: var(--fail); }
+
+.layer { border: 1px solid var(--rule); background: var(--panel); padding: 16px 18px; margin-bottom: 14px; }
+.layer > h4 { margin: 0 0 3px; font-size: 15px; font-weight: 600; }
+.layer > .scope { margin: 0 0 12px; font-size: 13px; color: var(--ink-3); line-height: 1.5; }
+.layer ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.layer li {
+  font-size: 14.5px; line-height: 1.45;
+  padding: 6px 9px; border-left: 3px solid transparent;
+  color: var(--ink-2);
+  transition: background .14s linear, color .14s linear;
+}
+.layer li.hl { background: var(--signal-soft); border-left-color: var(--signal); color: var(--ink); }
+.layer li.hl.slip { background: transparent; border-left-color: var(--fail); color: var(--ink); }
+.layer li .why { display: block; margin-top: 4px; font-size: 13px; color: var(--fail); line-height: 1.45; }
+.layer.plan p.close { margin: 0; font-size: 14.5px; color: var(--ink-2); line-height: 1.5; }
+.layer.plan p.close b { color: var(--ink); font-weight: 600; }
+
+/* ---------- Fuß ---------- */
+
+footer.foot {
+  margin-top: 44px; padding-top: 18px;
+  border-top: 1px solid var(--rule);
+  color: var(--ink-3); font-size: 13.5px;
+  display: flex; flex-wrap: wrap; gap: 6px 24px;
+}
+footer.foot code { font-size: 12.5px; color: var(--ink-2); }
+
+/* ---------- Zustände ---------- */
+
+:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 2px;
+}
+
+@media (max-width: 880px) {
+  nav.navgroups { grid-template-columns: minmax(0, 1fr); }
+  .mapgroup li { grid-template-columns: minmax(0, 1fr); }
+  .startgrid { grid-template-columns: minmax(0, 1fr); }
+  ul.ways button.wrow { grid-template-columns: minmax(0, 1fr); }
+  ul.ways .wmeta { align-items: flex-start; flex-direction: row; flex-wrap: wrap; }
+  .stage { grid-template-columns: minmax(0, 1fr); }
+  .stage > .ctx { border-left: none; border-top: 1px solid var(--rule); }
+  .ctxgrid { grid-template-columns: minmax(0, 1fr); }
+  .readout { position: static; }
+  ol.prompts .body { padding-left: 8px; }
+  ol.prompts .body .copywrap { flex-direction: column; }
+  ul.ways .wbody .copywrap { flex-direction: column; }
+  button.copy { align-self: flex-start; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+</style>
+</head>
+<body>
+<!--/A-HEAD-->
+<div class="wrap">
+
+  <header class="masthead">
+    <h1>Agenten-Werkstatt</h1>
+    <p>Der Workshop läuft in zwei Gruppen: die einen bauen mit dem Agenten die
+       Anwendung, die anderen bauen Werkzeuge für ihn. Drei Module gelten für beide,
+       die übrigen gehören je einer Gruppe. Fangt links beim Wegweiser an.</p>
+  </header>
+
+  <nav class="navgroups" aria-label="Module">
+    <div class="navgroup">
+      <p class="gtitle">Gemeinsam</p>
+      <div class="tabs" role="tablist" aria-label="Gemeinsame Module">
+        <button role="tab" id="tab-map"  aria-controls="mod-map"  aria-selected="true">Wegweiser</button>
+        <button role="tab" id="tab-loop" aria-controls="mod-loop" aria-selected="false">Die Schleife</button>
+        <button role="tab" id="tab-ctx"  aria-controls="mod-ctx"  aria-selected="false">Was geht ans Modell</button>
+      </div>
+    </div>
+    <div class="navgroup ga">
+      <p class="gtitle"><span class="gnum">Gruppe A</span> App bauen</p>
+      <div class="tabs" role="tablist" aria-label="Module der Gruppe A">
+        <button role="tab" id="tab-prompt" aria-controls="mod-prompt" aria-selected="false">Prompt-Labor</button>
+        <button role="tab" id="tab-spec"   aria-controls="mod-spec"   aria-selected="false">Erst der Plan</button>
+      </div>
+    </div>
+    <div class="navgroup gb">
+      <p class="gtitle"><span class="gnum">Gruppe B</span> Werkzeuge bauen</p>
+      <div class="tabs" role="tablist" aria-label="Module der Gruppe B">
+        <button role="tab" id="tab-ways" aria-controls="mod-ways" aria-selected="false">Sechs Wege</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============ WEGWEISER ============ -->
+  <section class="module" id="mod-map" role="tabpanel" aria-labelledby="tab-map">
+    <h2 class="mod-title">Was hier liegt — und wo ihr anfangt</h2>
+    <p class="lede">Das Repository enthält zwei Dinge nebeneinander: eine kleine Anwendung,
+      an der gearbeitet wird, und den Agenten, der daran arbeitet. Beides lässt sich
+      erweitern — und je nach Gruppe fasst ihr die andere Hälfte gar nicht an.
+      Filtert auf eure Gruppe, dann bleibt übrig, was euch betrifft.</p>
+
+    <div class="mapfilter" id="mapfilter">
+      <button type="button" aria-pressed="true"  data-f="all">Alles zeigen</button>
+      <button type="button" aria-pressed="false" data-f="a">Nur Gruppe A</button>
+      <button type="button" aria-pressed="false" data-f="b">Nur Gruppe B</button>
+    </div>
+
+    <div id="map"></div>
+
+    <div class="startgrid">
+      <div class="startcol">
+        <h3><span class="gnum">Gruppe A</span> So fangt ihr an</h3>
+        <ol>
+          <li><b>Setup prüfen.</b> <code>pytest</code> muss <code>6 passed</code> melden. Wenn nicht: erst das klären, alles andere wartet.</li>
+          <li><b>Lest <code>AGENTS.md</code></b> — zwei Minuten. Das sind die Regeln, an denen ihr den Agenten später messt.</li>
+          <li><b>ISSUE-01 öffnen</b> und Muster 2 aus <code>docs/PROMPTS.md</code> als Auftrag geben. Nicht selbst formulieren, das kostet nur Zeit.</li>
+          <li><b>Zuschauen statt wegsehen.</b> Plant er, bevor er ändert? Führt er die Tests wirklich aus? Das ist die eigentliche Übung.</li>
+          <li><b>Selbst prüfen.</b> <code>git diff</code> lesen und die zwölf Akzeptanzkriterien durchgehen — bevor ihr ihm glaubt.</li>
+        </ol>
+      </div>
+      <div class="startcol">
+        <h3><span class="gnum">Gruppe B</span> So fangt ihr an</h3>
+        <ol>
+          <li><b>Setup prüfen.</b> <code>pytest</code> muss <code>6 passed</code> melden, und die App sollte laufen: <code>uvicorn src.api:app --reload</code>.</li>
+          <li><b>Einen Weg wählen</b> — siehe Modul „Sechs Wege". Command oder Skill sind der leichteste Einstieg, der MCP-Server der aufwendigste.</li>
+          <li><b>Erst das vorhandene Beispiel laufen lassen</b>, bevor ihr etwas Eigenes baut. Dann wisst ihr, wie „funktioniert" aussieht.</li>
+          <li><b>Klein bauen und wirklich testen.</b> Eine Erweiterung, die läuft, ist mehr wert als drei halbfertige.</li>
+          <li><b><code>templates/</code> mitnehmen.</b> Das ist der Teil, der auch nächste Woche im eigenen Projekt noch nützt.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MODUL 1 ============ -->
+  <section class="module" id="mod-loop" role="tabpanel" aria-labelledby="tab-loop" hidden>
+    <h2 class="mod-title">Ein Lauf durch ISSUE-01</h2>
+    <p class="lede">Zehn Schritte, wie sie in diesem Repository tatsächlich vorkommen —
+      mit den echten Dateien und der echten Fehlermeldung. Klickt euch durch; unten steht
+      jeweils, worauf ihr bei eurem eigenen Agenten achten solltet.</p>
+
+    <div class="rail" id="rail" role="group" aria-label="Schritte"></div>
+
+    <div class="stage">
+      <div class="act">
+        <div class="step-head">
+          <span class="idx" id="s-idx">01</span>
+          <h3 id="s-title">—</h3>
+        </div>
+        <p class="what" id="s-what">—</p>
+        <pre class="term" id="s-term"></pre>
+      </div>
+      <aside class="ctx">
+        <h4>Im Kontext des Modells</h4>
+        <ul class="files" id="s-files"></ul>
+        <div class="meter">
+          <div class="bar"><i id="s-bar" style="width:0%"></i></div>
+          <div class="read"><span id="s-tok">0 Token</span><span>4.500</span></div>
+        </div>
+      </aside>
+    </div>
+
+    <div class="watch">
+      <h4>Worauf achten</h4>
+      <p id="s-note">—</p>
+    </div>
+
+    <div class="controls">
+      <button class="ctrl ghost" id="b-prev">Zurück</button>
+      <button class="ctrl" id="b-next">Weiter</button>
+      <span class="pos" id="s-pos">Schritt 1 von 10</span>
+    </div>
+  </section>
+
+  <!-- ============ MODUL 2 ============ -->
+  <section class="module" id="mod-prompt" role="tabpanel" aria-labelledby="tab-prompt" hidden>
+    <h2 class="mod-title">Sieben Muster, die tragen</h2>
+    <p class="lede">Wortgleich zu <code>docs/PROMPTS.md</code> im Repository, damit nichts
+      auseinanderdriftet. Aufklappen, kopieren, im eigenen Projekt weiterverwenden.</p>
+    <ol class="prompts" id="prompts"></ol>
+  </section>
+
+  <!-- ============ MODUL 3 ============ -->
+  <section class="module" id="mod-ways" role="tabpanel" aria-labelledby="tab-ways" hidden>
+    <h2 class="mod-title">Sechs Wege, den Agenten zu erweitern</h2>
+    <p class="lede">Sie werden regelmäßig verwechselt, und die Namen helfen nicht.
+      Wählt aus, was ihr erreichen wollt — der passende Weg wird hervorgehoben.
+      Fünf davon beeinflussen, was das Modell denkt. Einer nicht: Ein Plugin läuft
+      als Code, ob das Modell daran denkt oder nicht.</p>
+
+    <div class="chooser" id="chooser"></div>
+
+    <ul class="ways" id="ways"></ul>
+
+    <p class="footnote">„Hook" ist kein OpenCode-Begriff — einen Schlüssel
+      <code>hooks</code> gibt es nicht. Was anderswo so heißt, ist hier ein Plugin;
+      die Hook-Namen sind die Ereignisse darin.</p>
+  </section>
+
+  <!-- ============ MODUL 4 ============ -->
+  <section class="module" id="mod-ctx" role="tabpanel" aria-labelledby="tab-ctx" hidden>
+    <h2 class="mod-title">Was geht ans Modell</h2>
+    <p class="lede">Jede Datei, die der Agent liest, wird Teil der Anfrage an das Modell.
+      Die Zahlen sind aus den tatsächlichen Dateien dieses Repositorys gerechnet
+      (rund 3,6 Zeichen je Token). Hakt an, was der Agent lesen soll.</p>
+
+    <div class="ctxgrid">
+      <div>
+        <div class="presets">
+          <button data-preset="issue">Was ISSUE-01 braucht</button>
+          <button data-preset="all">Alles im Repository</button>
+          <button data-preset="none">Nichts</button>
+        </div>
+        <ul class="picker" id="picker"></ul>
+      </div>
+      <div class="readout">
+        <div class="big"><span id="c-tok">0</span><small>Token</small></div>
+        <p class="sub" id="c-sub">Nichts ausgewählt.</p>
+        <div class="meter">
+          <div class="bar"><i id="c-bar" style="width:0%"></i></div>
+          <div class="read"><span id="c-files">0 Dateien</span><span>16.803 gesamt</span></div>
+        </div>
+        <div class="verdict" id="c-verdict">
+          <strong>Alles Angehakte verlässt euren Rechner.</strong>
+          Nicht der Dateiname — der Inhalt, vollständig.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MODUL 5 ============ -->
+  <section class="module" id="mod-spec" role="tabpanel" aria-labelledby="tab-spec" hidden>
+    <h2 class="mod-title">Erst der Plan</h2>
+    <p class="lede">Ein Agent füllt jede Lücke in der Aufgabe selbst — schnell, plausibel und
+      ohne nachzufragen. Die Frage ist nicht, ob er Annahmen trifft, sondern wo ihr sie vorher
+      festlegt. Klickt links auf eine erfundene Entscheidung; rechts leuchtet auf, was sie
+      verhindert hätte.</p>
+
+    <div class="specgrid">
+      <div>
+        <div class="vague">
+          <p>„Teilnehmer sollen sich zu Veranstaltungen anmelden können."
+            <span class="src">So wird ein Ticket meistens formuliert. Fachlich nicht falsch — nur unvollständig.</span></p>
+        </div>
+
+        <h3>Was der Agent daraus macht</h3>
+        <p class="hint">Keine dieser Entscheidungen ist unvernünftig. Sie steht nur nirgends geschrieben.</p>
+        <ul class="consequences" id="consequences"></ul>
+      </div>
+
+      <div>
+        <h3>Was ihn davon abgehalten hätte</h3>
+        <p class="hint">Drei Ebenen, von dauerhaft bis einmalig.</p>
+
+        <div class="layer">
+          <h4>AGENTS.md</h4>
+          <p class="scope">Gilt für jede Aufgabe in diesem Repository. Einmal geschrieben, immer wirksam.</p>
+          <ul>
+            <li id="a-db">In-Memory-Datenspeicherung. Keine externe Datenbank.</li>
+            <li id="a-arch">Fachlogik darf nicht direkt in API-Routen implementiert werden.</li>
+            <li id="a-pii">API-Fehlermeldungen sollen keine unnötigen personenbezogenen Daten enthalten.</li>
+          </ul>
+        </div>
+
+        <div class="layer">
+          <h4>issues/ISSUE-01</h4>
+          <p class="scope">Gilt für diese eine Aufgabe. Hierhin gehört alles, was nur jetzt gilt.</p>
+          <ul>
+            <li id="i-409">Kriterium 4 — Bei ausgebuchter Veranstaltung liefert die API HTTP 409.</li>
+            <li id="i-norm">Kriterium 7 — Groß-/Kleinschreibung und Leerzeichen werden bei der Prüfung auf Doppelanmeldung ignoriert.</li>
+            <li id="i-scope">Nicht Teil dieses Issues — Löschen und Bearbeiten von Anmeldungen, Datenbank, Authentifizierung.</li>
+          </ul>
+        </div>
+
+        <div class="layer plan">
+          <h4>Der Plan des Agenten</h4>
+          <p class="scope">Entsteht in Schritt 5 der Schleife.</p>
+          <p class="close">Die letzte Ebene, auf der eine Korrektur nichts kostet: ein Satz im Gespräch, und er fängt neu an.
+            <b>Danach korrigiert ihr Code.</b></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <span>Begleitmaterial zum Workshop <em>Agentische Softwareentwicklung</em></span>
+    <span>Inhalte aus <code>docs/PROMPTS.md</code>, <code>docs/GLOSSAR.md</code> und <code>AGENTS.md</code></span>
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---------------- Modulumschalter ---------------- */
+
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.navgroup button'));
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      tabs.forEach(function (t) {
+        var on = t === tab;
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+      });
+    });
+  });
+
+  /* ---------------- Wegweiser ---------------- */
+
+  var MAP = [
+    { g: 'Die Anwendung — daran wird gearbeitet', rows: [
+      ['src/', 'models.py, service.py, api.py. Fachlogik gehört in den Service, die Routen bleiben dünn.', 'both'],
+      ['tests/', 'Sechs Tests im Ausgangszustand. Der Maßstab dafür, ob nach einer Änderung noch alles läuft.', 'both'],
+      ['issues/', 'Drei Tickets. ISSUE-02 erst öffnen, wenn die Workshop-Leitung es freigibt.', 'a']
+    ]},
+    { g: 'Der Agent — den könnt ihr erweitern', rows: [
+      ['AGENTS.md', 'Regeln, die bei jeder Aufgabe gelten. Die wirksamste Datei im Repository.', 'both'],
+      ['.opencode/commands/', 'Command-Beispiel: /check-acceptance prüft gegen die Akzeptanzkriterien.', 'b'],
+      ['.opencode/skills/', 'Skill-Beispiel: privacy-safe-error-messages. Der Agent lädt ihn von selbst.', 'b'],
+      ['.opencode/agents/', 'Subagent-Beispiel: reviewer, dem das Ändern von Dateien entzogen ist.', 'b'],
+      ['.opencode/plugins/', 'Plugin-Beispiel: edit-log.js protokolliert jede Dateiänderung.', 'b'],
+      ['mcp-starter/', 'MCP-Server mit dem Werkzeug list_events. Die aufwendigste Ausbaustufe.', 'b']
+    ]},
+    { g: 'Zum Nachschlagen', rows: [
+      ['docs/PROMPTS.md', 'Sieben Prompt-Muster zum Kopieren, jeweils mit Hinweis worauf zu achten ist.', 'both'],
+      ['docs/GLOSSAR.md', 'Die Begriffe, die heute fallen. Nicht vorab lesen, nur nachschlagen.', 'both'],
+      ['docs/AGENDA.md', 'Ablauf des Tages und beide Gruppen im Überblick.', 'both'],
+      ['docs/SETUP_CHECKLIST.md', 'Setup Schritt für Schritt. Idealerweise vor dem Termin erledigt.', 'both'],
+      ['docs/CUSTOM_ISSUE_PROMPT.md', 'Prompt, der aus einer Feature-Idee ein sauberes Ticket macht.', 'a']
+    ]},
+    { g: 'Zum Mitnehmen', rows: [
+      ['templates/', 'Leere Vorlagen für alle sechs Wege plus opencode.json — für euer eigenes Projekt, nicht für dieses.', 'take']
+    ]},
+    { g: 'Setup', rows: [
+      ['opencode.json.example', 'Vorlage für die Modellanbindung. Kopieren nach opencode.json, Werte eintragen.', 'both'],
+      ['pyproject.toml', 'Abhängigkeiten. Installation mit uv sync --extra dev.', 'both']
+    ]}
+  ];
+
+  var TAGTEXT = { both: 'beide', a: 'Gruppe A', b: 'Gruppe B', take: 'mitnehmen' };
+
+  var elMap = document.getElementById('map');
+  var mapRows = [];
+
+  MAP.forEach(function (grp) {
+    var wrap = document.createElement('div');
+    wrap.className = 'mapgroup';
+    var h = document.createElement('h3');
+    h.textContent = grp.g;
+    var ul = document.createElement('ul');
+
+    grp.rows.forEach(function (r) {
+      var li = document.createElement('li');
+      li.setAttribute('data-tag', r[2]);
+
+      var p = document.createElement('span');
+      p.className = 'mpath';
+      p.textContent = r[0];
+
+      var w = document.createElement('span');
+      w.className = 'mwhat';
+      w.textContent = r[1];
+
+      var tg = document.createElement('span');
+      tg.className = 'mtag ' + r[2];
+      tg.textContent = TAGTEXT[r[2]];
+
+      li.appendChild(p);
+      li.appendChild(w);
+      li.appendChild(tg);
+      ul.appendChild(li);
+      mapRows.push(li);
+    });
+
+    wrap.appendChild(h);
+    wrap.appendChild(ul);
+    elMap.appendChild(wrap);
+  });
+
+  var filterBtns = Array.prototype.slice.call(document.querySelectorAll('#mapfilter button'));
+  filterBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      var f = b.getAttribute('data-f');
+      filterBtns.forEach(function (o) {
+        o.setAttribute('aria-pressed', o === b ? 'true' : 'false');
+      });
+      mapRows.forEach(function (li) {
+        var tag = li.getAttribute('data-tag');
+        li.hidden = !(f === 'all' || tag === 'both' || tag === 'take' || tag === f);
+      });
+    });
+  });
+
+  /* ---------------- Modul 1: die Schleife ---------------- */
+
+  var STEPS = [
+    {
+      title: 'Der Auftrag geht ein',
+      what: 'Noch passiert nichts im Repository. Der Prompt trennt bewusst zwei Dinge, die ein Agent von sich aus gern vermischt: verstehen und ändern.',
+      term: '<span class="c">&gt; Prompt</span>\nLies AGENTS.md und issues/ISSUE-01-registration.md.\n\nAnalysiere zuerst Architektur und bestehende Tests.\nErstelle einen kurzen Plan und <span class="hi">ändere bis dahin keine Dateien</span>.\n\nImplementiere danach das Issue vollständig.\nErgänze sinnvolle Tests, führe alle Tests aus und behebe Fehler.',
+      add: [['Auftrag', 90]],
+      note: 'Diese eine Zeile — „ändere bis dahin keine Dateien" — ist der ganze Unterschied zwischen einem Agenten, dem ihr folgen könnt, und einem, der euch überrollt. Ob er sich daran hält, entscheidet sich in Schritt 5.'
+    },
+    {
+      title: 'Liest die Hausregeln',
+      what: 'AGENTS.md enthält die verbindlichen Regeln: Architektur, Testpflicht, Datenschutz, was er mit Git tun darf.',
+      term: '<span class="c">&gt; read</span> AGENTS.md\n\n  Architekturregeln\n    src/api.py      HTTP-Endpunkte und Fehler-Mapping\n    src/service.py  Fachlogik\n    src/models.py   Datenmodelle\n    <span class="c">Fachlogik darf nicht direkt in API-Routen stehen.</span>\n\n  Entwicklungsregeln\n    <span class="c">Bestehende Tests nicht löschen oder abschwächen,</span>\n    <span class="c">nur damit eine Implementierung grün wird.</span>',
+      add: [['AGENTS.md', 495]],
+      note: 'Die Regeln stehen jetzt im Kontext — mehr nicht. Sie sind Text, kein Zwang. Ein Agent kann sie lesen und trotzdem ignorieren; nachprüfen lässt sich das nur am Ergebnis.'
+    },
+    {
+      title: 'Liest das Ticket',
+      what: 'Zwölf Akzeptanzkriterien. Zwei davon sind die eigentliche Arbeit, der Rest ist Randfall.',
+      term: '<span class="c">&gt; read</span> issues/ISSUE-01-registration.md\n\n  POST /events/{event_id}/registrations\n\n   2  unbekannte Veranstaltung      → 404\n   4  ausgebucht                    → 409\n   5  dieselbe Person doppelt       → 409\n   6  name + agency gemeinsam betrachten\n   <span class="hi">7  Groß-/Kleinschreibung und Leerzeichen ignorieren</span>\n  12  README um ein API-Beispiel ergänzen',
+      add: [['issues/ISSUE-01-registration.md', 475]],
+      note: 'Kriterium 7 ist die Stelle, an der Läufe auseinandergehen. Manche Agenten normalisieren sauber mit strip() und casefold(), manche vergessen die Leerzeichen, manche erfinden eine eigene Regel dazu. Und Kriterium 12 wird gern überlesen.'
+    },
+    {
+      title: 'Verschafft sich Überblick',
+      what: 'Er liest den vorhandenen Code und — wichtiger — die vorhandenen Tests, bevor er selbst welche schreibt.',
+      term: '<span class="c">&gt; read</span> src/models.py src/service.py src/api.py\n<span class="c">&gt; read</span> tests/conftest.py tests/test_api.py tests/test_service.py\n\n  <span class="c">gefunden:</span> EventService mit In-Memory-Zustand\n  <span class="c">gefunden:</span> EventNotFoundError → HTTP 404 in api.py\n  <span class="c">gefunden:</span> Fixture client() in conftest.py\n  <span class="c">gefunden:</span> 6 bestehende Tests',
+      add: [['src/ (3 Dateien)', 550], ['tests/ (3 Dateien)', 762]],
+      note: 'Liest er die bestehenden Tests nicht, baut er eine zweite Teststruktur neben eurer auf — eigene Fixtures, eigener Stil, doppelte Arbeit. Das ist einer der zuverlässigsten Qualitätsunterschiede zwischen Agentenläufen.'
+    },
+    {
+      title: 'Schreibt den Plan',
+      what: 'Ein Plan, kein Code. Der Kontext wächst hier nur um seine eigene Antwort — es wurde keine Datei geöffnet und keine geschrieben.',
+      term: '<span class="c">&gt; Plan</span>\n  1. models.py    Registration (name, agency)\n  2. service.py   register(event_id, reg)\n                  + EventFullError, DuplicateRegistrationError\n                  Normalisierung: strip() + casefold()\n  3. api.py       POST-Route, Mapping 404 / 409\n  4. tests/       Service- und API-Ebene\n\n<span class="c">  Keine Dateien geändert.</span>',
+      add: [['(eigener Plan)', 350]],
+      note: 'Kein einziger schreibender Werkzeugaufruf. Genau das war die Vorgabe. Wenn hier schon Dateien geändert werden, ignoriert der Agent den Auftrag — und das ist der erste Punkt, an dem ihr eingreifen solltet, nicht erst am Ende.'
+    },
+    {
+      title: 'Implementiert',
+      what: 'Drei Dateien, entlang der Architektur aus AGENTS.md. Die Fachlogik landet im Service, die Route bleibt dünn.',
+      term: '<span class="c">&gt; write</span> src/models.py     <span class="c">+8</span>\n<span class="c">&gt; write</span> src/service.py    <span class="c">+34</span>\n<span class="c">&gt; write</span> src/api.py        <span class="c">+16</span>\n<span class="c">&gt; write</span> tests/test_service.py  <span class="c">+21</span>\n<span class="c">&gt; write</span> tests/test_api.py      <span class="c">+28</span>\n\n  def _norm(value: str) -&gt; str:\n      return value.strip().casefold()',
+      add: [['(geschriebener Code)', 700]],
+      note: 'Prüft am Diff, ob die Fachlogik wirklich in service.py steht. Der häufigste Architekturverstoß ist eine Route, die selbst nachsieht, ob schon jemand angemeldet ist — funktioniert, verletzt aber die Regel und rächt sich beim nächsten Ticket.'
+    },
+    {
+      title: 'Führt die Tests aus — rot',
+      what: 'Der Agent irrt sich. Er hat den Ausbuchungs-Fall mit dem falschen Statuscode belegt.',
+      term: '<span class="c">$ pytest</span>\n\n  tests/test_service.py ....         <span class="ok">[ 44%]</span>\n  tests/test_api.py .....<span class="no">F</span>..        <span class="no">[100%]</span>\n\n  <span class="no">FAILED</span> tests/test_api.py::test_event_full_returns_409\n    assert 400 == 409\n\n  <span class="no">8 passed, 1 failed</span>',
+      add: [['(Testausgabe)', 200]],
+      note: 'Der interessanteste Moment des ganzen Workshops. Er merkt den Fehler nur, weil er die Tests wirklich ausgeführt hat. Ein Agent, der behauptet, alles sei grün, kommt an dieser Stelle nie an — und ihr merkt es erst, wenn ihr selbst pytest tippt.'
+    },
+    {
+      title: 'Korrigiert sich und läuft erneut',
+      what: 'Eine Zeile geändert, erneut ausgeführt. Neun Tests, davon sechs bestehende.',
+      term: '<span class="c">&gt; edit</span> src/api.py    <span class="c">409 statt 400</span>\n<span class="c">$ pytest</span>\n\n  tests/test_service.py ....         <span class="ok">[ 44%]</span>\n  tests/test_api.py .....            <span class="ok">[100%]</span>\n\n  <span class="ok">9 passed in 0.12s</span>',
+      add: [['(Testausgabe)', 150]],
+      note: 'Dass die neuen Tests grün sind, war zu erwarten. Der eigentliche Wert steckt in den sechs alten: Sie beweisen, dass beim Umbau nichts kaputtgegangen ist. Deshalb steht in AGENTS.md, dass bestehende Tests nicht abgeschwächt werden dürfen.'
+    },
+    {
+      title: 'Prüft sich selbst',
+      what: 'Er geht die zwölf Kriterien durch und nennt von sich aus ein Restrisiko.',
+      term: '<span class="c">&gt; Selbstprüfung gegen die Akzeptanzkriterien</span>\n\n   1–11  <span class="ok">erfüllt</span>\n     12  <span class="no">offen</span>  README-Beispiel fehlt noch\n\n  <span class="c">Restrisiko:</span> Namen werden mit casefold() verglichen.\n  „Müller" und „Mueller" gelten damit als verschiedene\n  Personen. Im Ticket steht dazu nichts.',
+      add: [['(Selbstprüfung)', 300]],
+      note: 'Er prüft gegen die Kriterien, die er gelesen hat — und nur gegen die. Dass Kriterium 12 offen blieb, findet er selbst. Was im Ticket gar nicht steht, prüft niemand. Genau dort beginnt eure Arbeit.'
+    },
+    {
+      title: 'Und dann kommt ISSUE-02',
+      what: 'Ein Ergebnis aus dem Datenschutz-Review. Alle Tests waren grün, alle Kriterien bis auf eines erfüllt — und trotzdem war die Lösung nicht zulässig.',
+      term: '<span class="c">&gt; read</span> issues/ISSUE-02-security-review.md\n\n  <span class="c">Bisher lieferte die API bei Doppelanmeldung:</span>\n  {\n    "detail": <span class="no">"Max Beispiel von Polizei Beispielstadt</span>\n               <span class="no">ist bereits angemeldet"</span>\n  }\n\n  <span class="c">Zulässig wäre:</span>\n  { "detail": <span class="ok">"Registration already exists"</span> }',
+      add: [['issues/ISSUE-02-security-review.md', 336]],
+      note: 'Kein Test hätte das gefunden, weil niemand ihn geschrieben hat. Der Agent hat alles richtig gemacht, was man ihm gesagt hat. Das ist die Antwort auf die Frage, mit der dieser Workshop endet: Wo bleibt menschliches Review notwendig? Genau hier.'
+    }
+  ];
+
+  var MAX_TOK = 4500;
+  var cur = 0;
+
+  var elRail  = document.getElementById('rail');
+  var elIdx   = document.getElementById('s-idx');
+  var elTitle = document.getElementById('s-title');
+  var elWhat  = document.getElementById('s-what');
+  var elTerm  = document.getElementById('s-term');
+  var elFiles = document.getElementById('s-files');
+  var elBar   = document.getElementById('s-bar');
+  var elTok   = document.getElementById('s-tok');
+  var elNote  = document.getElementById('s-note');
+  var elPos   = document.getElementById('s-pos');
+  var bPrev   = document.getElementById('b-prev');
+  var bNext   = document.getElementById('b-next');
+
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+  function de(n) { return n.toLocaleString('de-DE'); }
+
+  STEPS.forEach(function (s, i) {
+    var b = document.createElement('button');
+    b.innerHTML = '<span class="dot"></span><span class="lbl">' + pad(i + 1) + '</span>';
+    b.title = s.title;
+    b.setAttribute('aria-label', 'Schritt ' + (i + 1) + ': ' + s.title);
+    b.addEventListener('click', function () { show(i); });
+    elRail.appendChild(b);
+  });
+  var railBtns = Array.prototype.slice.call(elRail.children);
+
+  function show(i) {
+    cur = i;
+    var s = STEPS[i];
+
+    elIdx.textContent = pad(i + 1);
+    elTitle.textContent = s.title;
+    elWhat.textContent = s.what;
+    elTerm.innerHTML = s.term;
+    elNote.textContent = s.note;
+    elPos.textContent = 'Schritt ' + (i + 1) + ' von ' + STEPS.length;
+
+    railBtns.forEach(function (b, j) {
+      b.className = j < i ? 'done' : (j === i ? 'current' : '');
+    });
+
+    elFiles.innerHTML = '';
+    var total = 0;
+    for (var k = 0; k <= i; k++) {
+      STEPS[k].add.forEach(function (pair) {
+        total += pair[1];
+        var li = document.createElement('li');
+        if (k === i) { li.className = 'fresh'; }
+        li.innerHTML = '<b>' + pair[0] + '</b><span class="k">' + de(pair[1]) + '</span>';
+        elFiles.appendChild(li);
+      });
+    }
+    elTok.textContent = de(total) + ' Token';
+    elBar.style.width = Math.min(100, (total / MAX_TOK) * 100) + '%';
+
+    bPrev.disabled = i === 0;
+    bNext.disabled = i === STEPS.length - 1;
+  }
+
+  bPrev.addEventListener('click', function () { if (cur > 0) show(cur - 1); });
+  bNext.addEventListener('click', function () { if (cur < STEPS.length - 1) show(cur + 1); });
+
+  document.addEventListener('keydown', function (e) {
+    if (document.getElementById('mod-loop').hidden) { return; }
+    var t = e.target.tagName;
+    if (t === 'INPUT' || t === 'TEXTAREA') { return; }
+    if (e.key === 'ArrowRight' && cur < STEPS.length - 1) { show(cur + 1); }
+    if (e.key === 'ArrowLeft' && cur > 0) { show(cur - 1); }
+  });
+
+  show(0);
+
+  /* ---------------- Modul 2: Prompt-Labor ---------------- */
+
+  var PROMPTS = [
+    {
+      t: 'Repository verstehen',
+      w: 'Wenn ihr vor einer fremden Codebasis steht.',
+      p: 'Analysiere dieses Repository.\n\nVerändere keine Dateien.\n\nErkläre mir:\n- wofür die Anwendung da ist\n- wie der Code aufgeteilt ist und welche Datei wofür zuständig ist\n- wie die Tests aufgebaut sind und wie ich sie ausführe\n- welche Konventionen ich beachten muss, wenn ich etwas ergänze\n\nNenne am Ende drei Stellen, an denen du dir unsicher bist.',
+      n: 'Liest er wirklich Dateien, oder rät er aus den Dateinamen? Dieser Prompt ist zugleich der beste Einstieg in ein Projekt, das ihr im Alltag übernehmt.'
+    },
+    {
+      t: 'Ticket umsetzen',
+      w: 'Der Standard-Auftrag. Trennt Planen von Ändern.',
+      p: 'Lies AGENTS.md und issues/ISSUE-01-registration.md.\n\nAnalysiere zuerst Architektur und bestehende Tests.\nErstelle einen kurzen Plan und ändere bis dahin keine Dateien.\n\nImplementiere danach das Issue vollständig.\nErgänze sinnvolle Tests, führe alle Tests aus und behebe Fehler.\nPrüfe abschließend git diff und alle Akzeptanzkriterien.\nNenne mögliche Restrisiken.',
+      n: 'Hält er sich an „bis dahin keine Dateien"? Und führt er die Tests wirklich aus — oder behauptet er nur, dass sie grün sind? Der Unterschied ist im Verlauf sichtbar: Es muss ein Werkzeugaufruf mit pytest und dessen Ausgabe zu sehen sein.'
+    },
+    {
+      t: 'Zweiter Agent als Reviewer',
+      w: 'Nach einer vermeintlich fertigen Implementierung, in einer neuen Sitzung.',
+      p: 'Du bist Reviewer, nicht Entwickler.\n\nLies AGENTS.md, das umgesetzte Issue und den aktuellen git diff.\nVerändere keine Dateien.\n\nPrüfe:\n- Erfüllung der Akzeptanzkriterien\n- Testabdeckung\n- Architektur\n- Datenschutz\n- Randfälle\n\nLiefere Findings nach Schweregrad.',
+      n: 'Findet der zweite Agent etwas, das der erste übersehen hat? Und findet <b>ihr</b> etwas, das beide übersehen haben — das ist die interessantere Frage.'
+    },
+    {
+      t: 'Wo bist du unsicher?',
+      w: 'Direkt nach einer Änderung, bevor ihr sie selbst durchgeht.',
+      p: 'Gehe deine eigene Änderung noch einmal durch.\n\nNenne mir:\n- die Stelle, bei der du dir am unsichersten bist, und warum\n- Annahmen, die du getroffen hast, ohne dass sie im Issue standen\n- was bei deiner Lösung kaputtgehen könnte, ohne dass ein Test es merkt',
+      n: 'Antwortet er konkret und mit Dateiverweisen — oder allgemein und gefällig („man könnte noch mehr Tests schreiben")? Nur die konkrete Antwort ist etwas wert.'
+    },
+    {
+      t: 'Test zuerst',
+      w: 'Bei Fehlerbehebungen und klar formulierbaren Anforderungen.',
+      p: 'Schreibe zuerst einen Test, der das gewünschte Verhalten prüft und\nmit dem aktuellen Stand fehlschlägt. Führe ihn aus und zeige mir,\ndass er rot ist.\n\nImplementiere erst danach die Änderung, bis der Test grün ist.\nLösche oder entschärfe dabei keine bestehenden Tests.',
+      n: 'Der rote Test ist der Beweis, dass er tatsächlich das Richtige prüft. Ein Test, der von Anfang an grün ist, sichert oft gar nichts ab.'
+    },
+    {
+      t: 'Commit-Message aus dem Diff',
+      w: 'Wenn eine Änderung fertig und von euch geprüft ist.',
+      p: 'Lies git diff und schlage eine Commit-Message vor.\n\nErste Zeile knapp und in der Sache, danach eine kurze Begründung,\nwarum die Änderung nötig war.\nCommitte nicht selbst — gib mir nur den Text.',
+      n: 'Beschreibt die Message, was sich fachlich ändert, oder zählt sie nur Dateien auf? Nebenbei ein guter Test dafür, ob die Änderung klein genug geschnitten war: Wenn die Message eine Aufzählung braucht, waren es mehrere Änderungen.'
+    },
+    {
+      t: 'Aufgabe kleiner schneiden',
+      w: 'Wenn der Agent zu viel anfasst oder ihr den Überblick verliert.',
+      p: 'Halte an. Verändere vorerst nichts mehr.\n\nZerlege die Aufgabe in die kleinstmöglichen Schritte, die einzeln\nlauffähig und testbar sind.\nZeige mir die Liste und beginne erst nach meiner Freigabe mit Schritt 1.',
+      n: 'Das ist der wirksamste Notausgang. Wenn auch das nicht hilft: Änderungen mit <b>git checkout -- .</b> verwerfen und in einer neuen Sitzung mit einem kleineren Auftrag anfangen.'
+    }
+  ];
+
+  var elPrompts = document.getElementById('prompts');
+
+  PROMPTS.forEach(function (p, i) {
+    var li = document.createElement('li');
+
+    var row = document.createElement('button');
+    row.className = 'row';
+    row.setAttribute('aria-expanded', 'false');
+    row.innerHTML =
+      '<span class="pn">' + pad(i + 1) + '</span>' +
+      '<span><span class="pt">' + p.t + '</span><span class="pw">' + p.w + '</span></span>' +
+      '<span class="chev">+</span>';
+
+    var body = document.createElement('div');
+    body.className = 'body';
+    body.hidden = true;
+
+    var wrap = document.createElement('div');
+    wrap.className = 'copywrap';
+    var pre = document.createElement('pre');
+    pre.textContent = p.p;
+    var copy = document.createElement('button');
+    copy.className = 'copy';
+    copy.type = 'button';
+    copy.textContent = 'Kopieren';
+    copy.addEventListener('click', function () {
+      var done = function () {
+        copy.textContent = 'Kopiert';
+        copy.classList.add('done');
+        setTimeout(function () {
+          copy.textContent = 'Kopieren';
+          copy.classList.remove('done');
+        }, 1600);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(p.p).then(done, function () { fallback(p.p, done); });
+      } else {
+        fallback(p.p, done);
+      }
+    });
+    wrap.appendChild(pre);
+    wrap.appendChild(copy);
+
+    var note = document.createElement('p');
+    note.className = 'note';
+    note.innerHTML = 'Worauf achten: ' + p.n;
+
+    body.appendChild(wrap);
+    body.appendChild(note);
+
+    row.addEventListener('click', function () {
+      var open = body.hidden;
+      body.hidden = !open;
+      row.setAttribute('aria-expanded', open ? 'true' : 'false');
+      row.querySelector('.chev').textContent = open ? '−' : '+';
+    });
+
+    li.appendChild(row);
+    li.appendChild(body);
+    elPrompts.appendChild(li);
+  });
+
+  function fallback(text, done) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); done(); } catch (e) { /* stumm */ }
+    document.body.removeChild(ta);
+  }
+
+  /* ---------------- Modul 3: sechs Wege ---------------- */
+
+  var WAYS = [
+    {
+      n: 'AGENTS.md',
+      trig: 'Gilt immer, ungefragt',
+      path: 'AGENTS.md',
+      start: 'Startgerüst: vorhanden',
+      effort: 1,
+      f: 'Regeln, die für jede Aufgabe in diesem Repository gelten sollen.',
+      ask: 'Es soll immer gelten, ohne dass ich daran denken muss.',
+      file: 'AGENTS.md',
+      tpl: 'templates/AGENTS.md.template',
+      code: '## Architekturregeln\n\n- src/api.py enthält HTTP-Endpunkte und Mapping auf HTTP-Fehler.\n- src/service.py enthält die Fachlogik.\n- Fachlogik darf nicht direkt in API-Routen implementiert werden.\n\n## Entwicklungsregeln\n\n- Für neue Funktionalität müssen Tests ergänzt werden.\n- Bestehende Tests sollen nicht gelöscht oder abgeschwächt werden,\n  nur damit eine Implementierung "grün" wird.'
+    },
+    {
+      n: 'Custom Command',
+      trig: 'Ihr ruft /name auf',
+      path: '.opencode/commands/',
+      start: 'Beispiel: /check-acceptance',
+      effort: 1,
+      f: 'Wiederkehrende Abläufe, die ihr bewusst startet.',
+      ask: 'Ich will es selbst anstoßen, wenn ich es brauche.',
+      file: '.opencode/commands/check-acceptance.md',
+      tpl: 'templates/command.md.template',
+      code: '---\nname: check-acceptance\ndescription: Prüft die Implementierung gegen die Akzeptanzkriterien.\nargument-hint: "<issue-datei>"\nallowed-tools: Read Glob Grep Bash(pytest *) Bash(git *)\n---\n\nPrüfe, ob der aktuelle Stand die Akzeptanzkriterien aus\n$ARGUMENTS erfüllt. Ändere dabei keine Dateien.\n\n# Aufruf:  /check-acceptance issues/ISSUE-01-registration.md'
+    },
+    {
+      n: 'Skill',
+      trig: 'Der Agent lädt ihn selbst',
+      path: '.opencode/skills/',
+      start: 'Beispiel: privacy-safe-error-messages',
+      effort: 1,
+      f: 'Wissen, das nur manchmal gebraucht wird — er erkennt selbst, wann.',
+      ask: 'Der Agent soll es von selbst heranziehen, wenn es passt.',
+      file: '.opencode/skills/privacy-safe-error-messages/SKILL.md',
+      tpl: 'templates/SKILL.md.template',
+      code: '---\nname: privacy-safe-error-messages\ndescription: Wann der Agent diesen Skill laden soll — so konkret\n             wie möglich. Allein danach entscheidet er.\n---\n\nRegel, Beispiele, wie sie anzuwenden ist.\n\n# Die description ist die ganze Miete: zu vage formuliert,\n# wird der Skill nie geladen; zu eng, verpasst er die Fälle.'
+    },
+    {
+      n: 'Subagent',
+      trig: '@name, oder der Hauptagent beauftragt ihn',
+      path: '.opencode/agents/',
+      start: 'Beispiel: reviewer',
+      effort: 2,
+      f: 'Ein zweiter Kopf mit eigenem Auftrag — und weniger Rechten als ihr selbst.',
+      ask: 'Es soll jemand prüfen, der nichts ändern darf.',
+      file: '.opencode/agents/reviewer.md',
+      tpl: 'templates/subagent.md.template',
+      code: '---\ndescription: Prüft den Stand gegen die Akzeptanzkriterien.\n             Ändert keine Dateien.\nmode: subagent\npermission:\n  edit: deny\n---\n\nDu bist Reviewer, nicht Entwickler.\nBenenne Findings, setze sie nicht um.\n\n# Aufruf:  @reviewer Prüf den Stand gegen ISSUE-01.\n# Prüfen:  opencode agent list  ->  reviewer (subagent)'
+    },
+    {
+      n: 'MCP-Server',
+      trig: 'Der Agent ruft ein Werkzeug auf',
+      path: 'eigener Prozess · mcp-starter/',
+      start: 'Beispiel: list_events',
+      effort: 3,
+      f: 'Zugriff auf etwas, das nicht im Repository steht.',
+      ask: 'Der Agent braucht Zugriff auf etwas außerhalb des Repositorys.',
+      file: 'mcp-starter/server_komplett.py',
+      tpl: 'templates/opencode.json.template (mcp-Block)',
+      code: 'import httpx\nfrom mcp.server.fastmcp import FastMCP\n\nmcp = FastMCP("convention-app-tools")\n\n\n@mcp.tool()\ndef list_events() -> list[dict[str, Any]]:\n    \u0022\u0022\u0022Listet alle Veranstaltungen der Convention App auf.\u0022\u0022\u0022\n    response = httpx.get(f"{API_BASE_URL}/events", timeout=5.0)\n    response.raise_for_status()\n    return response.json()\n\n\n# Type Hints und Docstring genügen — FastMCP erzeugt das\n# Tool-Schema daraus automatisch.'
+    },
+    {
+      n: 'Plugin',
+      trig: 'Läuft bei einem Ereignis — ohne das Modell',
+      path: '.opencode/plugins/',
+      start: 'Beispiel: edit-log.js',
+      effort: 2,
+      f: 'Verhalten, das greifen muss, egal was das Modell gerade vorhat.',
+      ask: 'Es soll auch dann passieren, wenn das Modell nicht daran denkt.',
+      file: '.opencode/plugins/edit-log.js',
+      tpl: 'templates/plugin.js.template',
+      code: 'import { appendFile } from "node:fs/promises"\nimport { join } from "node:path"\n\nexport const EditLog = async ({ directory }) => {\n  const logPath = join(directory, ".opencode", "edit-log.txt")\n\n  return {\n    event: async ({ event }) => {\n      if (event.type !== "file.edited") return\n      await appendFile(logPath, event.properties.file + "\\n", "utf8")\n    },\n  }\n}'
+    }
+  ];
+
+  var elChooser = document.getElementById('chooser');
+  var elWays = document.getElementById('ways');
+  var askBtns = [];
+  var wayRows = [];
+  var wayBodies = [];
+  var wayChevs = [];
+
+  WAYS.forEach(function (w, i) {
+    var ask = document.createElement('button');
+    ask.type = 'button';
+    ask.setAttribute('aria-pressed', 'false');
+    ask.textContent = w.ask;
+    ask.addEventListener('click', function () { pickWay(i); });
+    askBtns.push(ask);
+    elChooser.appendChild(ask);
+
+    var li = document.createElement('li');
+
+    var row = document.createElement('button');
+    row.type = 'button';
+    row.className = 'wrow';
+    row.setAttribute('aria-expanded', 'false');
+
+    var name = document.createElement('div');
+    name.innerHTML = '<span class="wname"></span><span class="wtrig"></span>';
+    name.querySelector('.wname').textContent = w.n;
+    name.querySelector('.wtrig').textContent = w.trig;
+
+    var fuer = document.createElement('div');
+    fuer.className = 'wfor';
+    fuer.textContent = w.f;
+
+    var meta = document.createElement('div');
+    meta.className = 'wmeta';
+    var pathEl = document.createElement('span');
+    pathEl.className = 'wpath';
+    pathEl.textContent = w.path;
+    var startEl = document.createElement('span');
+    startEl.className = 'wstart';
+    startEl.textContent = w.start;
+    var eff = document.createElement('span');
+    eff.className = 'effort';
+    for (var k = 0; k < 3; k++) {
+      var bar = document.createElement('i');
+      if (k < w.effort) { bar.className = 'on'; }
+      eff.appendChild(bar);
+    }
+    var chev = document.createElement('span');
+    chev.className = 'wchev';
+    chev.textContent = '+';
+    meta.appendChild(pathEl);
+    meta.appendChild(startEl);
+    meta.appendChild(eff);
+    meta.appendChild(chev);
+    wayChevs.push(chev);
+
+    row.appendChild(name);
+    row.appendChild(fuer);
+    row.appendChild(meta);
+
+    var body = document.createElement('div');
+    body.className = 'wbody';
+    body.hidden = true;
+
+    var wrap = document.createElement('div');
+    wrap.className = 'copywrap';
+    var pre = document.createElement('pre');
+    pre.textContent = w.code;
+    var copy = document.createElement('button');
+    copy.className = 'copy';
+    copy.type = 'button';
+    copy.textContent = 'Kopieren';
+    copy.addEventListener('click', function () {
+      var done = function () {
+        copy.textContent = 'Kopiert';
+        copy.classList.add('done');
+        setTimeout(function () {
+          copy.textContent = 'Kopieren';
+          copy.classList.remove('done');
+        }, 1600);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(w.code).then(done, function () { fallback(w.code, done); });
+      } else {
+        fallback(w.code, done);
+      }
+    });
+    wrap.appendChild(pre);
+    wrap.appendChild(copy);
+
+    var datei = document.createElement('p');
+    datei.className = 'wfile';
+    datei.innerHTML = 'Lauffähiges Beispiel: <code></code>';
+    datei.querySelector('code').textContent = w.file;
+
+    var vorlage = document.createElement('p');
+    vorlage.className = 'wfile';
+    vorlage.innerHTML = 'Leere Vorlage zum Mitnehmen: <code></code>';
+    vorlage.querySelector('code').textContent = w.tpl;
+
+    body.appendChild(wrap);
+    body.appendChild(datei);
+    body.appendChild(vorlage);
+
+    row.addEventListener('click', function () { toggleWay(i); });
+
+    li.appendChild(row);
+    li.appendChild(body);
+    wayRows.push(li);
+    wayBodies.push(body);
+    elWays.appendChild(li);
+  });
+
+  function setOpen(i, open) {
+    wayBodies[i].hidden = !open;
+    wayChevs[i].textContent = open ? '−' : '+';
+    wayRows[i].querySelector('.wrow').setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+
+  function toggleWay(i) {
+    setOpen(i, wayBodies[i].hidden);
+  }
+
+  function pickWay(i) {
+    var wasOn = askBtns[i].getAttribute('aria-pressed') === 'true';
+    askBtns.forEach(function (b) { b.setAttribute('aria-pressed', 'false'); });
+    wayRows.forEach(function (r, j) {
+      r.className = '';
+      setOpen(j, false);
+    });
+    if (wasOn) { return; }
+    askBtns[i].setAttribute('aria-pressed', 'true');
+    wayRows[i].className = 'hl';
+    setOpen(i, true);
+  }
+
+  /* ---------------- Modul 4: was geht ans Modell ---------------- */
+
+  var FILES = [
+    { f: 'AGENTS.md',                          k: 495,  g: 'issue' },
+    { f: 'issues/ISSUE-01-registration.md',    k: 475,  g: 'issue' },
+    { f: 'src/models.py',                      k: 91,   g: 'issue' },
+    { f: 'src/service.py',                     k: 225,  g: 'issue' },
+    { f: 'src/api.py',                         k: 234,  g: 'issue' },
+    { f: 'tests/conftest.py',                  k: 68,   g: 'issue' },
+    { f: 'tests/test_api.py',                  k: 466,  g: 'issue' },
+    { f: 'tests/test_service.py',              k: 228,  g: 'issue' },
+    { f: 'issues/ISSUE-02-security-review.md', k: 336 },
+    { f: 'issues/ISSUE-03-validation.md',      k: 144 },
+    { f: '.opencode/ (4 Beispiele)',           k: 1551, tag: 'Command, Skill, Subagent, Plugin' },
+    { f: 'mcp-starter/server_komplett.py',     k: 424 },
+    { f: 'docs/GLOSSAR.md',                    k: 891 },
+    { f: 'docs/PROMPTS.md',                    k: 1335 },
+    { f: 'README.md',                          k: 1824 },
+    { f: 'templates/ (7 Vorlagen)',            k: 3723, tag: 'Zum Mitnehmen gedacht — der Agent braucht sie nicht' },
+    { f: 'docs/SOLUTION_HINTS.md',             k: 238,  tag: 'Enthält die Lösung. Der Agent löst das Ticket dann nicht, er schreibt sie ab.' },
+    { f: 'docs/TRAINER_GUIDE.md',              k: 4055, tag: 'Nur für die Workshop-Leitung — ein Viertel des ganzen Repositorys' },
+    { f: '.env', k: 0, warn: true, tag: 'Nicht in diesem Repository. In eurem?' }
+  ];
+
+  var TOTAL_ALL = FILES.reduce(function (a, x) { return a + x.k; }, 0);
+
+  var picker  = document.getElementById('picker');
+  var cTok    = document.getElementById('c-tok');
+  var cSub    = document.getElementById('c-sub');
+  var cBar    = document.getElementById('c-bar');
+  var cFiles  = document.getElementById('c-files');
+  var cVerd   = document.getElementById('c-verdict');
+  var boxes   = [];
+
+  FILES.forEach(function (x, i) {
+    var li = document.createElement('li');
+    if (x.warn) { li.className = 'warn'; }
+
+    var label = document.createElement('label');
+
+    var input = document.createElement('input');
+    input.type = 'checkbox';
+    input.setAttribute('data-i', String(i));
+    input.addEventListener('change', recount);
+    boxes.push(input);
+
+    var mid = document.createElement('span');
+    mid.innerHTML = '<span class="fn">' + x.f + '</span>' +
+      (x.tag ? '<span class="tag">' + x.tag + '</span>' : '');
+
+    var tk = document.createElement('span');
+    tk.className = 'tk';
+    tk.textContent = x.k ? de(x.k) : '—';
+
+    label.appendChild(input);
+    label.appendChild(mid);
+    label.appendChild(tk);
+    li.appendChild(label);
+    picker.appendChild(li);
+  });
+
+  function recount() {
+    var sum = 0, n = 0, secret = false, leak = false;
+    boxes.forEach(function (b, i) {
+      if (!b.checked) { return; }
+      n++;
+      sum += FILES[i].k;
+      if (FILES[i].f.indexOf('SOLUTION') > -1 || FILES[i].f.indexOf('TRAINER') > -1) { secret = true; }
+      if (FILES[i].warn) { leak = true; }
+    });
+
+    cTok.textContent = de(sum);
+    cBar.style.width = Math.min(100, (sum / TOTAL_ALL) * 100) + '%';
+    cFiles.textContent = n === 1 ? '1 Datei' : de(n) + ' Dateien';
+
+    if (n === 0) {
+      cSub.textContent = 'Nichts ausgewählt.';
+    } else {
+      cSub.textContent = 'Diese ' + (n === 1 ? 'Datei geht' : n + ' Dateien gehen') +
+        ' vollständig an das Modell — bei jeder weiteren Nachfrage erneut.';
+    }
+
+    if (leak) {
+      cVerd.className = 'verdict hot';
+      cVerd.innerHTML = '<strong>Genau das ist die Frage, die zählt.</strong> ' +
+        'Der Agent unterscheidet nicht zwischen einer Konfigurationsdatei und einer Datei mit Zugangsdaten. ' +
+        'Er liest, was im Weg liegt.';
+    } else if (secret) {
+      cVerd.className = 'verdict hot';
+      cVerd.innerHTML = '<strong>Damit ist die Übung vorbei.</strong> ' +
+        'Trainerunterlagen und Lösungshinweise machen zusammen fast die Hälfte des Repositorys aus — ' +
+        'und der Agent löst das Ticket dann nicht mehr, er schreibt die Lösung ab.';
+    } else {
+      cVerd.className = 'verdict';
+      cVerd.innerHTML = '<strong>Alles Angehakte verlässt euren Rechner.</strong> ' +
+        'Nicht der Dateiname — der Inhalt, vollständig.';
+    }
+  }
+
+  document.querySelectorAll('.presets button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var mode = b.getAttribute('data-preset');
+      boxes.forEach(function (box, i) {
+        if (mode === 'none') { box.checked = false; }
+        else if (mode === 'all') { box.checked = !FILES[i].warn; }
+        else { box.checked = FILES[i].g === 'issue'; }
+      });
+      recount();
+    });
+  });
+
+  boxes.forEach(function (b, i) { b.checked = FILES[i].g === 'issue'; });
+  recount();
+
+  /* ---------------- Modul 5: erst der Plan ---------------- */
+
+  var GUESSES = [
+    { q: 'Speichert die Anmeldungen in einer SQLite-Datei',
+      b: 'AGENTS.md', k: 'a-db' },
+    { q: 'Schreibt die Prüfung auf Doppelanmeldung direkt in die API-Route',
+      b: 'AGENTS.md', k: 'a-arch' },
+    { q: 'Liefert bei ausgebuchter Veranstaltung 400 statt 409',
+      b: 'Nur das Ticket', k: 'i-409' },
+    { q: 'Lässt " max beispiel " ein zweites Mal durch',
+      b: 'Nur das Ticket', k: 'i-norm' },
+    { q: 'Ergänzt DELETE /registrations, weil es dazugehört',
+      b: 'Nur das Ticket', k: 'i-scope' },
+    { q: 'Nennt Name und Dienststelle in der Fehlermeldung',
+      b: 'Steht in AGENTS.md — und passiert trotzdem', k: 'a-pii', slip: true,
+      why: 'Genau das war ISSUE-02. Eine Regel im Text ist keine Garantie — abgesichert ist sie erst durch einen Test.' }
+  ];
+
+  var elCons = document.getElementById('consequences');
+  var consBtns = [];
+
+  GUESSES.forEach(function (g, i) {
+    var li = document.createElement('li');
+    if (g.slip) { li.className = 'slip'; }
+
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.setAttribute('aria-pressed', 'false');
+
+    var q = document.createElement('span');
+    q.className = 'cq';
+    q.textContent = g.q;
+
+    var badge = document.createElement('span');
+    badge.className = 'cb';
+    badge.textContent = g.b;
+
+    b.appendChild(q);
+    b.appendChild(badge);
+    b.addEventListener('click', function () { lightUp(i); });
+
+    consBtns.push(b);
+    li.appendChild(b);
+    elCons.appendChild(li);
+  });
+
+  function lightUp(i) {
+    consBtns.forEach(function (b, j) {
+      b.setAttribute('aria-pressed', j === i ? 'true' : 'false');
+    });
+    GUESSES.forEach(function (g) {
+      var el = document.getElementById(g.k);
+      el.className = '';
+      var w = el.querySelector('.why');
+      if (w) { el.removeChild(w); }
+    });
+    var g = GUESSES[i];
+    var target = document.getElementById(g.k);
+    target.className = g.slip ? 'hl slip' : 'hl';
+    if (g.why) {
+      var w = document.createElement('span');
+      w.className = 'why';
+      w.textContent = g.why;
+      target.appendChild(w);
+    }
+  }
+
+  lightUp(0);
+
+})();
+</script>
+<!--/A-->
+</body>
+</html>

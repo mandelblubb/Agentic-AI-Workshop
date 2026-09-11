@@ -1,0 +1,54 @@
+---
+description: <Wofür dieser Agent da ist. Danach entscheidet der Hauptagent,
+             ob er ihn beauftragt — so konkret wie möglich.>
+mode: subagent
+permission:
+  edit: deny
+# model: <anderes Modell als der Hauptagent, optional>
+# temperature: 0.1
+# hidden: true      # nicht in der Autovervollständigung anzeigen
+---
+
+<!--
+  Vorlage. Kopieren nach .opencode/agents/<name>.md, ausfüllen,
+  diesen Kommentar löschen. Der Dateiname wird zum Agentennamen.
+
+  PRIMARY ODER SUBAGENT
+  mode: subagent   spezialisiert, wird beauftragt oder mit @name gerufen
+  mode: primary    eigenständiger Modus, mit Tab umschaltbar
+  Für Werkzeuge, die eine Teilaufgabe übernehmen, ist subagent richtig.
+
+  DIE PERMISSION IST DER EIGENTLICHE PUNKT
+  Ein Subagent ohne eigene Rechte ist nur ein längerer Prompt. Der Wert
+  entsteht dadurch, dass ihr ihm WENIGER erlaubt als euch selbst:
+  Ein Prüfer, der nichts ändern darf, muss seine Befunde benennen,
+  statt sie stillschweigend einzubauen.
+
+  Prüfen, ob OpenCode ihn kennt:
+      opencode agent list
+  In der Ausgabe muss "<name> (subagent)" stehen.
+
+  Aufrufen:
+      @<name> <Auftrag>
+-->
+
+<Rolle in einem Satz — und was der Agent ausdrücklich NICHT tut.>
+
+## Ablauf
+
+1. <Was zuerst gelesen wird.>
+2. <Was geprüft oder getan wird.>
+3. <Woran er erkennt, dass er fertig ist.>
+
+## Prüfpunkte
+
+- <Punkt 1>
+- <Punkt 2>
+- <Punkt 3>
+
+## Ausgabe
+
+<In welcher Form das Ergebnis kommen soll. Ohne diese Vorgabe bekommt ihr
+Fließtext unterschiedlicher Länge.>
+
+<Was er tun soll, wenn er nichts findet — sonst erfindet er etwas.>

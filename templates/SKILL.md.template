@@ -1,0 +1,65 @@
+---
+name: <skill-name>
+description: <Wann der Agent diesen Skill laden soll. Die wichtigste Zeile
+             der ganzen Datei — siehe Hinweis unten.>
+---
+
+<!--
+  Vorlage. Kopieren nach .opencode/skills/<skill-name>/SKILL.md,
+  ausfüllen, diesen Kommentar löschen.
+  Der Ordnername und `name` sollten übereinstimmen.
+
+  ZUR DESCRIPTION
+  Ein Skill wird nicht aufgerufen. Der Agent entscheidet allein anhand
+  dieses einen Textes, ob der Skill zur aktuellen Aufgabe passt. Er sieht
+  den Inhalt vorher nicht.
+
+  Zu vage ("hilft bei Code") — wird nie geladen.
+  Zu eng ("für Funktion parse_v2 in util.py") — verpasst alle Nachbarfälle.
+  Brauchbar: benennt die Situation, nicht das Wissen.
+     "Wenn Fehlermeldungen oder Logausgaben formuliert werden."
+     "Wenn ein neuer HTTP-Endpunkt hinzukommt."
+
+  WOFÜR SKILLS TAUGEN
+  Für Wissen, das manchmal gilt. Was immer gilt, gehört in AGENTS.md —
+  dort kostet es nichts an Erkennungsgenauigkeit.
+-->
+
+# <Titel der Regel>
+
+<Ein Satz: worum es geht.>
+
+## Regel
+
+<Was gilt. Konkret und überprüfbar formulieren.>
+
+## Beispiele
+
+Ungünstig:
+
+```text
+<Gegenbeispiel — was Leute typischerweise falsch machen>
+```
+
+Besser:
+
+```text
+<das Richtige>
+```
+
+## Grenzen
+
+<Wann die Regel NICHT gilt. Ohne diesen Abschnitt wenden Agenten Regeln
+gern zu breit an.>
+
+<!--
+  PRÜFEN, OB DER SKILL GREIFT
+  Nicht direkt aufrufbar. Stattdessen eine Aufgabe stellen, die klar in
+  den Beschreibungsbereich fällt, und beobachten, ob das Wissen sichtbar
+  angewandt wird. Im Verlauf erscheint eine Zeile wie
+      Skill "<skill-name>"
+  sobald der Agent ihn herangezogen hat.
+
+  Ein Skill beeinflusst Verhalten, er garantiert es nicht. Was wirklich
+  gelten muss, gehört zusätzlich in einen Test.
+-->

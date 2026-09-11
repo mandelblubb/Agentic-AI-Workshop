@@ -1,0 +1,64 @@
+/**
+ * <Was dieses Plugin tut, in einem Satz.>
+ *
+ * Vorlage. Kopieren nach .opencode/plugins/<name>.js, ausfüllen,
+ * diese Hinweise kürzen.
+ *
+ * WAS EIN PLUGIN VON DEN ANDEREN WEGEN UNTERSCHEIDET
+ * Command, Skill und Subagent beeinflussen, was das Modell denkt. Ein
+ * Plugin ist Code: Es läuft bei einem Ereignis, unabhängig davon, was das
+ * Modell gerade vorhat. Nehmt es für alles, was verlässlich passieren muss.
+ *
+ * "Hook" ist kein OpenCode-Begriff. Einen Schlüssel `hooks` gibt es nicht —
+ * die Hook-Namen sind die Ereignisse innerhalb des Plugins.
+ *
+ * EREIGNISSE
+ *   tool.execute.before    bevor ein Werkzeug läuft
+ *   tool.execute.after     danach
+ *   file.edited            eine Datei wurde geändert
+ *   session.created        neue Sitzung
+ *   session.idle           der Agent ist fertig
+ *   session.compacted      der Kontext wurde zusammengefasst
+ *   permission.asked       der Agent fragt um Erlaubnis
+ *   permission.replied     es wurde geantwortet
+ *
+ * WELCHE DATEN EIN EREIGNIS MITBRINGT
+ * Nicht raten. Nach dem ersten Start steht es typisiert in
+ *   .opencode/node_modules/@opencode-ai/sdk/dist/gen/types.gen.d.ts
+ * Beispiel: file.edited liefert { file: string }.
+ *
+ * BEIM ERSTEN START
+ * OpenCode legt .opencode/node_modules/ an und lädt Abhängigkeiten nach.
+ * Das dauert einen Moment und ist kein Fehler. Das Verzeichnis gehört in
+ * .gitignore.
+ *
+ * WENN ETWAS KLEMMT
+ * Ein fehlerhaftes Plugin kann die Sitzung stören. Zum Gegentesten:
+ *   opencode run --pure "..."     lädt keine Plugins
+ */
+
+import { appendFile } from "node:fs/promises"
+import { join } from "node:path"
+
+export const <PluginName> = async ({ directory, project, client, $ }) => {
+  // Einmalige Vorbereitung beim Laden — hier, nicht im Ereignis.
+  const zielDatei = join(directory, ".opencode", "<name>.txt")
+
+  return {
+    event: async ({ event }) => {
+      // Früh aussteigen: Das Plugin wird bei JEDEM Ereignis aufgerufen.
+      if (event.type !== "<ereignis.name>") return
+
+      // <Was passieren soll.>
+      await appendFile(zielDatei, `${new Date().toISOString()}\n`, "utf8")
+    },
+  }
+}
+
+/*
+ * LEITPLANKEN
+ * - Klein und schnell halten. Jede Verzögerung hier bremst jede Sitzung.
+ * - Nichts Blockierendes, keine Netzwerkaufrufe.
+ * - Fehler abfangen. Eine geworfene Ausnahme trifft den laufenden Agenten,
+ *   nicht euch.
+ */

@@ -1,0 +1,45 @@
+---
+name: <befehlsname>
+description: <Was der Befehl tut. Erscheint in der Befehlsübersicht.>
+argument-hint: "<was als Argument erwartet wird>"
+allowed-tools: Read Glob Grep Bash(pytest *) Bash(git *)
+---
+
+<!--
+  Vorlage. Kopieren nach .opencode/commands/<befehlsname>.md, ausfüllen,
+  diesen Kommentar löschen. Der Dateiname wird zum Befehl: /<dateiname>
+
+  COMMAND ODER SKILL?
+  Command: ihr ruft ihn auf, wenn ihr ihn braucht.
+  Skill:   der Agent zieht ihn heran, wenn er passt.
+  Ein wiederkehrender Ablauf, den ihr bewusst startet, ist ein Command.
+
+  ALLOWED-TOOLS ENG HALTEN
+  Nur, was der Befehl wirklich braucht. Ein reiner Prüfbefehl bekommt kein
+  Schreibrecht — dann kann er auch nichts kaputtmachen, wenn das Modell
+  den Auftrag missversteht. Bash-Rechte lassen sich auf Muster
+  einschränken: Bash(pytest *) erlaubt pytest, sonst nichts.
+
+  $ARGUMENTS wird beim Aufruf durch das ersetzt, was dahinter steht.
+-->
+
+# <befehlsname>
+
+<Was der Befehl tut, in einem Satz. Bei Bedarf: was er ausdrücklich nicht
+tut — etwa "Ändere dabei keine Dateien.">
+
+## Ablauf
+
+1. <Was zuerst gelesen wird — ggf. mit $ARGUMENTS.>
+2. <Nächster Schritt.>
+3. <Woran das Ergebnis gemessen wird.>
+
+## Ausgabe
+
+<In welcher Form das Ergebnis kommen soll.>
+
+## Beispiel-Aufruf
+
+```text
+/<befehlsname> <argument>
+```
