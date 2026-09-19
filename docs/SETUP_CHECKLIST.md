@@ -26,18 +26,20 @@ Pairing mit anderen Teilnehmenden und eine Fallback-Demo.
       `opencode upgrade`.
 - [ ] OpenCode **einmal gestartet** (beim ersten Start lädt OpenCode Daten
       nach — besser jetzt als am Workshop-Tag)
-- [ ] `opencode.json` aus `opencode.json.example` erstellt, `baseURL` und
-      Modellname mit den AIHub-Werten befüllt (siehe `README.md`, "OpenCode
-      mit dem AIHub verbinden"). Der API-Key gehört ohnehin **nicht** in
-      diese Datei, sondern in eine Umgebungsvariable — und den gibt es erst
-      am Workshop-Tag.
+- [ ] `opencode.json` aus `opencode.json.example` erstellt:
+      ```bash
+      cp opencode.json.example opencode.json
+      ```
+      Base-URL und Modelle sind schon eingetragen, ihr müsst nichts anpassen.
+      Der API-Key gehört ohnehin **nicht** in diese Datei, sondern in eine
+      Umgebungsvariable — und den gibt es erst am Workshop-Tag.
 - [ ] Konfiguration geprüft — geht ohne API-Key:
       ```bash
       opencode models
       ```
-      In der Ausgabe muss eine Zeile `aihub/<euer-modellname>` stehen. Dann
-      ist die `opencode.json` korrekt und es fehlt wirklich nur noch der
-      Key.
+      In der Ausgabe muss eine Zeile `aihub/qwen-3.8-27b-sovereign` stehen.
+      Dann ist die `opencode.json` korrekt und es fehlt wirklich nur noch
+      der Key.
 - [ ] Workshop-Repository entpackt bzw. geklont, im Terminal geöffnet
 - [ ] Abhängigkeiten installiert:
       ```bash

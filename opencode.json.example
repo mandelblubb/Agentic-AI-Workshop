@@ -1,16 +1,23 @@
 {
   "$schema": "https://opencode.ai/config.json",
+  "model": "aihub/qwen-3.8-27b-sovereign",
   "provider": {
     "aihub": {
       "npm": "@ai-sdk/openai-compatible",
       "name": "Firmeneigener AIHub",
       "options": {
-        "baseURL": "<AIHUB_BASE_URL>",
+        "baseURL": "https://adesso-ai-hub.3asabc.de/v1",
         "apiKey": "{env:AIHUB_API_KEY}"
       },
       "models": {
-        "<AIHUB_MODEL_NAME>": {
-          "name": "<Anzeigename fuer das Modell>"
+        "deepseek-v4-flash-sovereign": {
+          "name": "DeepSeek v4 Flash"
+        },
+        "qwen-3.6-35b-sovereign": {
+          "name": "Qwen 3.6 35B"
+        },
+        "qwen-3.8-27b-sovereign": {
+          "name": "Qwen 3.8 27B"
         }
       }
     }

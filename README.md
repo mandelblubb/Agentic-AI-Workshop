@@ -71,10 +71,9 @@ Begriffe in `docs/GLOSSAR.md`.
 cp opencode.json.example opencode.json
 ```
 
-In `opencode.json` `<AIHUB_BASE_URL>` und `<AIHUB_MODEL_NAME>` mit den
-Werten aus der Setup-Anleitung eintragen — das geht schon vorab. Den API-Key
-bekommt ihr zu Beginn des Workshops; er kommt **nicht** in die Datei, sondern
-in eine Umgebungsvariable:
+Base-URL und Modelle sind schon eingetragen, ihr müsst nichts anpassen. Den
+API-Key bekommt ihr zu Beginn des Workshops; er kommt **nicht** in die Datei,
+sondern in eine Umgebungsvariable:
 
 ```bash
 export AIHUB_API_KEY="euer-key"        # Linux/macOS
@@ -95,7 +94,7 @@ Zugangsproblem (`team not allowed to access model`), ist aber keines. Modell
 in dem Fall beim Aufruf erzwingen:
 
 ```bash
-opencode run -m aihub/<AIHUB_MODEL_NAME> "..."
+opencode run -m aihub/qwen-3.8-27b-sovereign "..."
 ```
 
 ## Installation
