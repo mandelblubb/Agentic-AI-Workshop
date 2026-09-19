@@ -12,18 +12,40 @@ Bei Problemen: Fehlermeldung/Screenshot vorab an [Kontakt einfügen] schicken.
 Falls bis zum Termin nichts behoben werden kann: trotzdem kommen — es gibt
 Pairing mit anderen Teilnehmenden und eine Fallback-Demo.
 
+**Dienstliches/gesperrtes Gerät ohne Admin-Rechte?** Die Installationsbefehle
+unten setzen voraus, dass ihr selbst Software installieren dürft. Ist das
+nicht der Fall: internen Software-Katalog/Self-Service nutzen oder IT
+kontaktieren, statt den Installer direkt herunterzuladen — und das frühzeitig,
+nicht erst kurz vor dem Termin.
+
 ## Für alle (Gruppe A und Gruppe B)
 
 - [ ] Python 3.11 oder neuer installiert (`python --version`)
+  - Windows: `winget install Python.Python.3.12`
+  - macOS: meist schon vorhanden, sonst `brew install python3`
+  - Linux: `sudo apt install python3` (oder das Äquivalent eurer Distribution)
 - [ ] Git installiert (`git --version`)
+  - Windows: `winget install Git.Git`
+  - macOS: `brew install git`
+  - Linux: `sudo apt install git`
 - [ ] Node.js/npm installiert (`node --version`) — wird von OpenCode benötigt
+  - Windows: `winget install OpenJS.NodeJS.LTS`
+  - macOS: `brew install node`
+  - Linux: [nodejs.org](https://nodejs.org/) (LTS-Version) für eine aktuelle
+    Version, Distributions-Pakete sind oft veraltet
 - [ ] OpenCode installiert, **mindestens Version 1.18**:
       ```bash
       opencode --version
       ```
-      Ältere Versionen (1.16.x) melden Verbindungsfehler nicht im Terminal
-      — die Fehlersuche wird dadurch unnötig mühsam. Bei Bedarf:
-      `opencode upgrade`.
+      Installation, funktioniert auf allen Plattformen (Node ist ja schon da):
+      ```bash
+      npm install -g opencode-ai
+      ```
+  - Alternative macOS/Linux: `curl -fsSL https://opencode.ai/install | bash`
+  - Alternative Windows: `choco install opencode` oder `scoop install opencode`
+
+  Ältere Versionen (1.16.x) melden Verbindungsfehler nicht im Terminal — die
+  Fehlersuche wird dadurch unnötig mühsam. Bei Bedarf: `opencode upgrade`.
 - [ ] OpenCode **einmal gestartet** (beim ersten Start lädt OpenCode Daten
       nach — besser jetzt als am Workshop-Tag)
 - [ ] `opencode.json` aus `opencode.json.example` erstellt:
