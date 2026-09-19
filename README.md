@@ -71,7 +71,7 @@ Begriffe in `docs/GLOSSAR.md`.
 cp opencode.json.example opencode.json
 ```
 
-Base-URL und Modelle sind schon eingetragen, ihr müsst nichts anpassen. Den
+Base-URL und Modelle sind schon eingetragen. Den
 API-Key bekommt ihr zu Beginn des Workshops; er kommt **nicht** in die Datei,
 sondern in eine Umgebungsvariable:
 
