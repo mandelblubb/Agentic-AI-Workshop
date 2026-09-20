@@ -181,9 +181,10 @@ Erwartung im Ausgangszustand:
 ```
 
 Teilnehmenden-Checkliste vorab verschicken: `docs/SETUP_CHECKLIST.md`
-(Python, Git, Node, OpenCode, `pytest`, für Gruppe B zusätzlich
-`mcp-starter/`) — idealerweise vor dem Termin ausfüllen lassen, nicht erst
-live. Der AIHub-Key ist bewusst **nicht** Teil der Vorbereitung: Er wird zu
+(Python, Git, Node, OpenCode, `pytest`, `mcp-starter/`) — für beide Gruppen
+gleich, weil die Gruppenwahl erst vor Ort fällt und Pairing über
+Gruppengrenzen sonst nicht geht. Idealerweise vor dem Termin ausfüllen
+lassen, nicht erst live. Der AIHub-Key ist bewusst **nicht** Teil der Vorbereitung: Er wird zu
 Beginn des Workshops verteilt.
 
 ## Empfohlener Prompt für ISSUE-01

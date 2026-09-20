@@ -158,7 +158,8 @@ pytest
 ## Anwendung starten
 
 ```bash
-uvicorn src.api:app --reload
+uv run uvicorn src.api:app --reload    # Variante A
+uvicorn src.api:app --reload           # Variante B, in der aktivierten Umgebung
 ```
 
 Danach:
