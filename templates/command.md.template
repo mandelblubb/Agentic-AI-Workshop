@@ -1,32 +1,38 @@
 ---
-name: <befehlsname>
 description: <Was der Befehl tut. Erscheint in der Befehlsübersicht.>
-argument-hint: "<was als Argument erwartet wird>"
-allowed-tools: Read Glob Grep Bash(pytest *) Bash(git *)
+agent: <name-eines-subagenten>
 ---
 
 <!--
   Vorlage. Kopieren nach .opencode/commands/<befehlsname>.md, ausfüllen,
   diesen Kommentar löschen. Der Dateiname wird zum Befehl: /<dateiname>
 
+  ES GIBT GENAU VIER FRONTMATTER-FELDER
+  description, agent, model, subtask. Ein Feld wie "allowed-tools" kennt
+  OpenCode nicht — es würde stillschweigend ignoriert, und der Command
+  liefe mit vollen Rechten weiter.
+
+  RECHTE HÄNGEN AM AGENTEN, NICHT AM COMMAND
+  Soll ein Command nichts ändern dürfen, gebt ihr ihm mit `agent:` einen
+  Subagenten, der das nicht darf — einen mit
+      permission:
+        edit: deny
+  in .opencode/agents/<name>.md (siehe subagent.md.template). Ohne `agent:`
+  läuft der Command als Hauptagent, mit allem, was der darf. Die Zeile
+  `agent:` kann entfallen; dann aber bewusst.
+
   COMMAND ODER SKILL?
   Command: ihr ruft ihn auf, wenn ihr ihn braucht.
   Skill:   der Agent zieht ihn heran, wenn er passt.
-  Ein wiederkehrender Ablauf, den ihr bewusst startet, ist ein Command.
 
-  ALLOWED-TOOLS ENG HALTEN
-  Nur, was der Befehl wirklich braucht. Ein reiner Prüfbefehl bekommt kein
-  Schreibrecht — dann kann er auch nichts kaputtmachen, wenn das Modell
-  den Auftrag missversteht. Bash-Rechte lassen sich auf Muster
-  einschränken: Bash(pytest *) erlaubt pytest, sonst nichts.
-
-  $ARGUMENTS wird beim Aufruf durch das ersetzt, was dahinter steht.
+  $ARGUMENTS wird durch alles ersetzt, was hinter dem Befehl steht;
+  $1, $2 … greifen einzelne Argumente heraus.
 -->
 
-# <befehlsname>
+# <Titel>
 
-<Was der Befehl tut, in einem Satz. Bei Bedarf: was er ausdrücklich nicht
-tut — etwa "Ändere dabei keine Dateien.">
+<Was der Befehl tut, in einem Satz — und was er ausdrücklich nicht tut,
+etwa "Ändere dabei keine Dateien.">
 
 ## Ablauf
 

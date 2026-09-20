@@ -19,15 +19,35 @@ Eine Veranstaltung besitzt:
 
 Im Verlauf des Workshops wird die Anwendung schrittweise durch einen Coding Agenten erweitert.
 
+## Eure Aufgabe
+
+**Gruppe A – App bauen.** Baut mit dem Coding Agenten die Planungs-App für
+Fortbildungsveranstaltungen weiter — was genau, entscheidet ihr. Die Tickets
+unter `issues/` sind ein Einstieg, kein Pflichtprogramm: ISSUE-01 ist ein
+guter erster Schritt, und eigene Ideen macht `docs/CUSTOM_ISSUE_PROMPT.md`
+zu einem Ticket. Ihr seid fertig, wenn die App mehr kann als am Anfang,
+jede neue Funktion durch Tests abgesichert ist und ihr den `git diff`
+selbst gelesen habt — nicht, wenn der Agent sagt, er sei fertig.
+
+**Gruppe B – Werkzeuge bauen.** Baut eine eigene Erweiterung für den Agenten:
+einen Command, einen Skill, einen Subagenten, ein Plugin oder ein
+MCP-Werkzeug. Ihr seid fertig, wenn OpenCode die Erweiterung kennt und ihr
+einmal gezeigt habt, dass sie wirkt. Eine, die läuft, zählt mehr als drei
+halbfertige.
+
+**Für beide:** Das Ergebnis ist nicht der Code. Es ist eure Antwort auf die
+Frage, mit der der Workshop endet — wo bleibt menschliches Review notwendig?
+
 ## Zwei Gruppen
 
 Der Workshop läuft in zwei parallelen Gruppen, je nach technischer Erfahrung:
 
-- **Gruppe A – App bauen (geführt):** Vorgegebene Tickets unter `issues/` schrittweise mit dem
-  Coding Agenten umsetzen (siehe "Workshop-Ablauf" unten). Empfohlen für
-  Teilnehmende mit weniger CLI-/Agenten-Erfahrung. Dient außerdem als
-  Fallback-Demo (per Beamer), falls Gruppe B bei einzelnen Gruppen nicht
-  vorankommt.
+- **Gruppe A – App bauen:** Die Planungs-App mit dem Coding Agenten
+  weiterentwickeln. Die Tickets unter `issues/` sind ein Einstieg für alle,
+  die einen wollen (siehe "Workshop-Ablauf" unten) — eigene Funktionen sind
+  ebenso willkommen. Empfohlen für Teilnehmende mit weniger
+  CLI-/Agenten-Erfahrung. Der Ticket-Weg dient außerdem als Fallback-Demo
+  (per Beamer), falls Gruppe B bei einzelnen Gruppen nicht vorankommt.
 - **Gruppe B – Werkzeuge bauen (frei):** Den Coding Agenten selbst erweitern. Es gibt fünf Wege,
   für jeden ein lauffähiges Startgerüst:
 
@@ -149,8 +169,11 @@ Danach:
 ## Workshop-Ablauf
 
 Zu Beginn erfolgt die Einteilung in Gruppe A oder Gruppe B (siehe "Zwei Gruppen").
-Die folgenden Runden beschreiben **Gruppe A**. Für **Gruppe B** direkt mit einem
-der Starter-READMEs beginnen: `.opencode/commands/README.md`,
+Die folgenden Runden beschreiben den **Ticket-Weg für Gruppe A** — ein
+Vorschlag, kein Muss. Wer lieber eine eigene Funktion baut, überspringt die
+Runden und lässt sich die Idee mit `docs/CUSTOM_ISSUE_PROMPT.md` zu einem
+Ticket ausformulieren. Für **Gruppe B** direkt mit einem der Starter-READMEs
+beginnen: `.opencode/commands/README.md`,
 `.opencode/skills/README.md`, `.opencode/agents/README.md`,
 `.opencode/plugins/README.md` oder `mcp-starter/README.md`.
 

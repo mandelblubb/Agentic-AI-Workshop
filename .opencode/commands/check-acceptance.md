@@ -1,8 +1,6 @@
 ---
-name: check-acceptance
 description: Prüft die aktuelle Implementierung gegen die Akzeptanzkriterien eines Issues und listet offene Punkte auf. Ändert keine Dateien.
-argument-hint: "<issue-datei>"
-allowed-tools: Read Glob Grep Bash(pytest *) Bash(git *)
+agent: reviewer
 ---
 
 # check-acceptance
