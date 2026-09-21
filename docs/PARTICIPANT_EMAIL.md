@@ -11,41 +11,39 @@ Softwareentwicklung" — bitte vor dem Termin lesen
 Hallo zusammen,
 
 im Anhang findet ihr alle Unterlagen für den Workshop
-"Einführung in agentische 
+"Einführung in agentische 
 Softwareentwicklung" am 24.09.2026 von 10:30-12:30.
 
-**Bitte vor dem Termin:**
-
+Bitte vor dem Termin:
 1. Anhang entpacken.
 2. `README.md` einmal durchlesen (Überblick, zwei Workshop-Gruppen).
 3. `docs/SETUP_CHECKLIST.md` Schritt für Schritt durchgehen — Python, Git,
-   Node.js, OpenCode, Beispieltests, MCP-Starter. Die Liste ist für beide
-   Gruppen gleich; welche ihr wählt, entscheidet ihr erst vor Ort.
-4. Bei Problemen: bitte **vorab** melden unter [Kontakt einfügen], nicht
-   erst am Workshop-Tag. Falls etwas bis dahin nicht gelöst werden kann:
-   trotzdem kommen, es gibt Pairing mit anderen Teilnehmenden.
+   Node.js, OpenCode, Beispieltests, MCP-Starter. Die Liste ist für beide
+   Gruppen gleich; welche ihr wählt, entscheidet ihr erst vor Ort.
+4. Falls etwas bis dahin nicht gelöst werden kann:
+Trotzdem kommen, es gibt Pairing mit anderen Teilnehmenden.
 
 Der Ablauf des Workshop-Tags selbst steht in `docs/AGENDA.md` — kurz
 zusammengefasst: Es gibt zwei Gruppen (eine geführte mit vorgegebenen
 Aufgaben, eine freie zum eigenständigen Erweitern des Coding Agenten), ihr
 entscheidet euch dafür direkt vor Ort.
 
-Ebenfalls im Anhang, aber ausdrücklich **keine Hausaufgabe**:
+Ebenfalls im Anhang:
 `docs/PROMPTS.md` (Prompts zum Kopieren) und `docs/GLOSSAR.md` (Begriffe) —
 beides ist zum Nachschlagen während des Workshops gedacht.
 
-**Zum Modellzugang:** Den API-Key für den firmeneigenen AIHub bekommt ihr
-zu Beginn des Workshops — ihr müsst vorab nichts beantragen, und ein VPN ist
-nicht nötig. Genau deshalb ist die Checkliste wichtig: Alles andere lässt
-sich vorab erledigen, sodass am Workshop-Tag nur noch eine Umgebungsvariable
-gesetzt werden muss.
+Zum Modellzugang:  
+Den API-Key für den AIHub bekommt ihr
+zu Beginn des Workshops. 
+
 
 Bei Fragen jederzeit melden.
+
 
 Viele Grüße
 
 Dr. Immo Weber BMI KI-Campus der Polizei (ext.)
-Thomas Kukofka BMI KI-Campus der Polizei (ext.
+Thomas Kukofka BMI KI-Campus der Polizei (ext.)
 
 ---
 
