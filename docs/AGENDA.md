@@ -5,6 +5,25 @@ einer kleinen Anwendung zur Verwaltung von Veranstaltungen — Ziel ist nicht
 die Anwendung selbst, sondern zu erleben, wie ein Coding Agent ein Projekt
 analysiert, plant, Code schreibt, testet und sich selbst korrigiert.
 
+## Eure Aufgabe
+
+**Gruppe A – App bauen.** Baut mit dem Coding Agenten die Planungs-App für
+Fortbildungsveranstaltungen weiter — was genau, entscheidet ihr. Die Tickets
+unter `issues/` sind ein Einstieg, kein Pflichtprogramm: ISSUE-01 ist ein
+guter erster Schritt, und eigene Ideen macht `docs/CUSTOM_ISSUE_PROMPT.md`
+zu einem Ticket. Ihr seid fertig, wenn die App mehr kann als am Anfang,
+jede neue Funktion durch Tests abgesichert ist und ihr den `git diff`
+selbst gelesen habt — nicht, wenn der Agent sagt, er sei fertig.
+
+**Gruppe B – Werkzeuge bauen.** Baut eine eigene Erweiterung für den Agenten:
+einen Command, einen Skill, einen Subagenten, ein Plugin oder ein
+MCP-Werkzeug. Ihr seid fertig, wenn OpenCode die Erweiterung kennt und ihr
+einmal gezeigt habt, dass sie wirkt. Eine, die läuft, zählt mehr als drei
+halbfertige.
+
+**Für beide:** Das Ergebnis ist nicht der Code. Es ist eure Antwort auf die
+Frage, mit der der Workshop endet — wo bleibt menschliches Review notwendig?
+
 ## Vorab
 
 Bitte vor dem Termin einmal durchgehen: **`docs/SETUP_CHECKLIST.md`**
@@ -17,9 +36,10 @@ gibt es Pairing, das ist kein Grund zur Sorge.
 
 Nach der Einführung entscheidet ihr euch für eine Gruppe:
 
-- **Gruppe A – App bauen (geführt).** Vorgegebene Tickets Schritt für Schritt mit dem
-  Coding Agenten umsetzen. Gut geeignet, wenn ihr mit CLI-Agenten/Coding
-  Agenten noch wenig Erfahrung habt.
+- **Gruppe A – App bauen.** Die Planungs-App mit dem Coding Agenten
+  weiterentwickeln — entlang der vorbereiteten Tickets oder mit eigenen
+  Ideen. Gut geeignet, wenn ihr mit CLI-Agenten/Coding Agenten noch wenig
+  Erfahrung habt.
 - **Gruppe B – Werkzeuge bauen (frei).** Eigene Erweiterungen für den Coding Agenten selbst
   bauen — Custom Command, Skill, Subagent, Plugin oder MCP-Server. Für jeden
   dieser fünf Wege liegt ein lauffähiges Startgerüst bereit. Gut geeignet,
@@ -42,17 +62,18 @@ Agenten achten sollte) und `docs/GLOSSAR.md` (die Begriffe, die fallen).
 | 0–20 min   | Einführung: Agentische Softwareentwicklung                                                  |
 | 20–25 min  | kurzer Technik-Check                                                                        |
 | 25–30 min  | Repository kennenlernen, Gruppenwahl                                                           |
-| 30–50 min  | **Gruppe A:** erstes Ticket · **Gruppe B:** Setup + erste eigene Erweiterung                    |
-| 50–65 min  | **Gruppe A:** zweites Ticket (wird zu diesem Zeitpunkt freigegeben) · **Gruppe B:** weiterbauen |
+| 30–50 min  | **Gruppe A:** erste Funktion (z. B. ISSUE-01) · **Gruppe B:** Setup + erste eigene Erweiterung  |
+| 50–65 min  | **Gruppe A:** weiterbauen — auf dem Ticket-Weg wird jetzt ISSUE-02 freigegeben · **Gruppe B:** weiterbauen |
 | 65–75 min  | **Gruppe A:** Agenten-Review · **Gruppe B:** weiterbauen/testen                                 |
-| 75–90 min  | **Gruppe A:** Eigene Issues erzeugen und umsetzen · **Gruppe B:** weiterbauen/testen            |
+| 75–90 min  | **Gruppe A:** nächste Funktion, eigene Idee als Ticket · **Gruppe B:** weiterbauen/testen       |
 | 90–120 min | Ergebnispräsentation & offene Fragen                                                        |
 
 ## Am Ende nehmt ihr mit
 
 - ein konkretes Gefühl dafür, was ein Coding Agent eigenständig leisten kann
   — und wo nicht
-- (Gruppe A) ein umgesetztes Feature inklusive Tests, selbst reviewt
+- (Gruppe A) eine Planungs-App, die mehr kann als am Anfang — inklusive
+  Tests, selbst reviewt
 - (Gruppe B) einen eigenen Command, Skill oder MCP-Server, der wirklich läuft
 - eine Antwort auf die Frage, die den Workshop abschließt: *Wo bleibt
   menschliches Review trotzdem notwendig?*

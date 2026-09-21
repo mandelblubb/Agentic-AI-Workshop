@@ -22,6 +22,11 @@ Die Endung `.template` beim Kopieren entfernen. Sie steht nur dran, damit eine
 Vorlage voller Platzhalter nicht versehentlich als echte Konfiguration oder als
 echtes Regelwerk eingelesen wird.
 
+**Alle Platzhalter in spitzen Klammern ersetzen**, nicht nur die offensichtlichen.
+Ein stehengebliebenes `<PluginName>` ist ein JavaScript-Syntaxfehler, der die
+Sitzung stört; ein stehengebliebenes `agent: <name-eines-subagenten>` lässt
+OpenCode einen Agenten suchen, den es nicht gibt.
+
 ## Womit anfangen
 
 `AGENTS.md` zuerst. Es ist die einzige Erweiterung, die ohne jede Konfiguration
@@ -45,6 +50,10 @@ anderer Clients. In OpenCode werden MCP-Server im `mcp`-Block der
 
 Ebenso gibt es **keinen Konfigurationsschlüssel `hooks`**. Was anderswo Hook
 heißt, ist hier ein Plugin; die Hook-Namen sind die Ereignisse darin.
+
+Und ein Command hat **kein Feld `allowed-tools`**. Rechte hängen in OpenCode am
+Agenten: Ein Command, der nichts ändern soll, bekommt mit `agent:` einen
+Subagenten, dem das Ändern entzogen ist — siehe `command.md.template`.
 
 ## Verlässlich statt geraten
 

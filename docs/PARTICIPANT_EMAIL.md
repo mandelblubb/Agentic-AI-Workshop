@@ -17,7 +17,8 @@ im Anhang findet ihr alle Unterlagen für den Workshop
 1. Anhang entpacken.
 2. `README.md` einmal durchlesen (Überblick, zwei Workshop-Gruppen).
 3. `docs/SETUP_CHECKLIST.md` Schritt für Schritt durchgehen — Python, Git,
-   Node.js, OpenCode, Beispieltests.
+   Node.js, OpenCode, Beispieltests, MCP-Starter. Die Liste ist für beide
+   Gruppen gleich; welche ihr wählt, entscheidet ihr erst vor Ort.
 4. Bei Problemen: bitte **vorab** melden unter [Kontakt einfügen], nicht
    erst am Workshop-Tag. Falls etwas bis dahin nicht gelöst werden kann:
    trotzdem kommen, es gibt Pairing mit anderen Teilnehmenden.

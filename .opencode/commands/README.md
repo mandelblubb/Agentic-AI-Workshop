@@ -22,16 +22,21 @@ erkennt — keine zusätzliche Konfiguration nötig. Aufbau:
 
 ```yaml
 ---
-name: <befehlsname>
 description: <kurze Beschreibung, wofür der Befehl da ist>
-argument-hint: "<was als Argument erwartet wird>"
-allowed-tools: <Liste erlaubter Werkzeuge, z. B. Read Grep Bash(pytest *)>
+agent: <Subagent mit passenden Rechten, optional>
 ---
 
-<Prompt-Text als Markdown, der beim Aufruf ausgeführt wird>
+<Prompt-Text als Markdown; $ARGUMENTS steht für alles hinter dem Befehl>
 ```
 
 Der Dateiname (ohne `.md`) wird zum Befehlsnamen (`/<dateiname>`).
+
+Mehr Felder gibt es nicht — `description`, `agent`, `model`, `subtask`. Ein
+Feld `allowed-tools` kennt OpenCode **nicht**; es würde stillschweigend
+ignoriert. **Rechte kommen vom Agenten:** `check-acceptance` läuft über
+`agent: reviewer`, den Subagenten aus `.opencode/agents/`, dem das Ändern
+von Dateien entzogen ist. Ohne `agent:` läuft ein Command mit allen Rechten
+des Hauptagenten.
 
 **Hinweis:** Das genaue Frontmatter-Schema kann sich je OpenCode-Version
 leicht unterscheiden — im Zweifel gegen die aktuelle OpenCode-Dokumentation
@@ -55,7 +60,9 @@ eigentlichen Workshop-Gedanken als reines Copy-Paste.
 
 ## Leitplanken
 
-- `allowed-tools` bewusst eng halten — nur, was der Command wirklich braucht.
+- Rechte über `agent:` eng halten — ein Prüfbefehl läuft über einen
+  Subagenten, der nichts ändern darf. Ohne `agent:` hat der Command alle
+  Rechte des Hauptagenten.
 - Keine neuen Abhängigkeiten ohne Grund.
 - Realistisch in der verbleibenden Zeit umsetzbar bleiben.
 

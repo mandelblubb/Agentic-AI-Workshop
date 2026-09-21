@@ -53,18 +53,44 @@ keine Vorgabe.
 
 ## In OpenCode einbinden
 
-Damit euer Coding Agent den Server als Werkzeug nutzen kann, muss er in der
-OpenCode-Konfiguration als MCP-Server eingetragen werden (Konfigurationsdatei
-und genaue Schlüsselnamen können sich je OpenCode-Version leicht
+Damit euer Coding Agent den Server als Werkzeug nutzen kann, muss er in
+`opencode.json` als MCP-Server eingetragen werden — als neuer Top-Level-Key
+`mcp`, **neben** dem bestehenden `provider`-Block, nicht anstelle davon:
+
+```json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "aihub/qwen-3.8-27b-sovereign",
+  "mcp": {
+    "convention-app-tools": {
+      "type": "local",
+      "command": ["python", "mcp-starter/server_komplett.py"],
+      "enabled": true
+    }
+  },
+  "provider": { "...": "euer bestehender provider-Block bleibt unverändert" }
+}
+```
+
+`server_komplett.py` durch euren eigenen Dateinamen ersetzen, sobald ihr das
+Template ausgefüllt oder erweitert habt. Danach **OpenCode neu starten**
+(`/exit`, dann `opencode` erneut) — MCP-Server werden nur beim Start
+geladen, eine laufende Session merkt eine nachträgliche Änderung nicht.
+
+**Hinweis:** Das genaue Schema kann sich je OpenCode-Version leicht
 unterscheiden — im Zweifel in der aktuellen OpenCode-Dokumentation
-gegenprüfen). Grundsätzlich braucht ein solcher Eintrag:
+gegenprüfen.
 
-- den Startbefehl (`python`, dann `server_komplett.py` bzw. euer eigener
-  Dateiname, sobald das Template ausgefüllt oder erweitert ist)
-- den Arbeitsordner (`mcp-starter/`)
+Nach dem Neustart testen, ob es wirklich greift — nicht nur, ob der Server
+in der Config steht:
 
-Nach dem Eintragen sollte euer Agent das Tool `list_events` (und alle
-selbst ergänzten Tools) in Prompts nutzen können.
+```text
+Nutze dein verfügbares Tool, um mir alle aktuellen Veranstaltungen
+aufzulisten.
+```
+
+Erscheint dabei ein sichtbarer Tool-Call in der TUI (nicht nur eine Antwort
+aus geratenem Wissen), ist die Einbindung erfolgreich.
 
 ## Leitplanken
 

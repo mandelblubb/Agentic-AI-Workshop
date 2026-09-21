@@ -55,7 +55,7 @@
   },
 
   "instructions": [
-    "AGENTS.md",
-    "docs/konventionen.md"
+    "docs/konventionen.md",
+    ".cursor/rules/*.md"
   ]
 }

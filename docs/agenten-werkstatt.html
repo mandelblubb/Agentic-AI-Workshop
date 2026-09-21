@@ -193,7 +193,7 @@ pre, code, .mono {
 }
 .mapgroup .mwhat { font-size: 14.5px; color: var(--ink-2); }
 .mapgroup .mtag {
-  font-size: 12px; white-space: nowrap; flex: none;
+  font-size: 12px; white-space: nowrap; flex: none; justify-self: start;
   border: 1px solid var(--rule-strong); padding: 1px 7px; color: var(--ink-3);
 }
 .mapgroup .mtag.a, .mapgroup .mtag.b { border-color: var(--signal); color: var(--ink); background: var(--signal-soft); }
@@ -659,9 +659,9 @@ footer.foot code { font-size: 12.5px; color: var(--ink-2); }
         <ol>
           <li><b>Setup prüfen.</b> <code>pytest</code> muss <code>6 passed</code> melden. Wenn nicht: erst das klären, alles andere wartet.</li>
           <li><b>Lest <code>AGENTS.md</code></b> — zwei Minuten. Das sind die Regeln, an denen ihr den Agenten später messt.</li>
-          <li><b>ISSUE-01 öffnen</b> und Muster 2 aus <code>docs/PROMPTS.md</code> als Auftrag geben. Nicht selbst formulieren, das kostet nur Zeit.</li>
+          <li><b>Eine Funktion wählen.</b> ISSUE-01 ist der schnellste Einstieg; eine eigene Idee wird mit <code>docs/CUSTOM_ISSUE_PROMPT.md</code> erst zum Ticket. Dann Muster 2 aus <code>docs/PROMPTS.md</code> als Auftrag geben.</li>
           <li><b>Zuschauen statt wegsehen.</b> Plant er, bevor er ändert? Führt er die Tests wirklich aus? Das ist die eigentliche Übung.</li>
-          <li><b>Selbst prüfen.</b> <code>git diff</code> lesen und die zwölf Akzeptanzkriterien durchgehen — bevor ihr ihm glaubt.</li>
+          <li><b>Selbst prüfen.</b> <code>git diff</code> lesen und jedes Akzeptanzkriterium einzeln abhaken — bevor ihr ihm glaubt.</li>
         </ol>
       </div>
       <div class="startcol">
@@ -680,8 +680,9 @@ footer.foot code { font-size: 12.5px; color: var(--ink-2); }
   <!-- ============ MODUL 1 ============ -->
   <section class="module" id="mod-loop" role="tabpanel" aria-labelledby="tab-loop" hidden>
     <h2 class="mod-title">Ein Lauf durch ISSUE-01</h2>
-    <p class="lede">Zehn Schritte, wie sie in diesem Repository tatsächlich vorkommen —
-      mit den echten Dateien und der echten Fehlermeldung. Klickt euch durch; unten steht
+    <p class="lede">Zehn Schritte, wie ein Lauf durch dieses Repository aussehen kann. Die
+      Dateien, Regeln und Akzeptanzkriterien sind echt — der Ablauf ist nachgestellt, damit
+      auch der Moment vorkommt, in dem etwas schiefgeht. Klickt euch durch; unten steht
       jeweils, worauf ihr bei eurem eigenen Agenten achten solltet.</p>
 
     <div class="rail" id="rail" role="group" aria-label="Schritte"></div>
@@ -1233,7 +1234,7 @@ footer.foot code { font-size: 12.5px; color: var(--ink-2); }
       ask: 'Ich will es selbst anstoßen, wenn ich es brauche.',
       file: '.opencode/commands/check-acceptance.md',
       tpl: 'templates/command.md.template',
-      code: '---\nname: check-acceptance\ndescription: Prüft die Implementierung gegen die Akzeptanzkriterien.\nargument-hint: "<issue-datei>"\nallowed-tools: Read Glob Grep Bash(pytest *) Bash(git *)\n---\n\nPrüfe, ob der aktuelle Stand die Akzeptanzkriterien aus\n$ARGUMENTS erfüllt. Ändere dabei keine Dateien.\n\n# Aufruf:  /check-acceptance issues/ISSUE-01-registration.md'
+      code: '---\ndescription: Prüft die Implementierung gegen die Akzeptanzkriterien.\nagent: reviewer\n---\n\nPrüfe, ob der aktuelle Stand die Akzeptanzkriterien aus\n$ARGUMENTS erfüllt. Ändere dabei keine Dateien.\n\n# Rechte kommen vom Agenten: reviewer darf nichts ändern.\n# Ein Feld allowed-tools gibt es nicht.\n# Aufruf:  /check-acceptance issues/ISSUE-01-registration.md'
     },
     {
       n: 'Skill',

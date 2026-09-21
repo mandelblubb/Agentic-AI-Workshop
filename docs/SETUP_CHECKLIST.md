@@ -18,7 +18,11 @@ nicht der Fall: internen Software-Katalog/Self-Service nutzen oder IT
 kontaktieren, statt den Installer direkt herunterzuladen — und das frühzeitig,
 nicht erst kurz vor dem Termin.
 
-## Für alle (Gruppe A und Gruppe B)
+**Die Liste ist für alle gleich**, unabhängig von der Gruppe. Die Gruppenwahl
+fällt erst vor Ort, und Pairing über Gruppengrenzen funktioniert nur, wenn
+bei allen dasselbe läuft.
+
+## Vor dem Termin
 
 - [ ] Python 3.11 oder neuer installiert (`python --version`)
   - Windows: `winget install Python.Python.3.12`
@@ -63,33 +67,43 @@ nicht erst kurz vor dem Termin.
       Dann ist die `opencode.json` korrekt und es fehlt wirklich nur noch
       der Key.
 - [ ] Workshop-Repository entpackt bzw. geklont, im Terminal geöffnet
-- [ ] Abhängigkeiten installiert:
+- [ ] Abhängigkeiten installiert — **einer** der beiden Wege, nicht beide:
+
+      **Variante A – mit `uv`:**
       ```bash
       uv sync --extra dev
-      # oder: pip install -e ".[dev]"
       ```
-      läuft ohne Fehler durch. Das `--extra dev` bei `uv` bitte nicht
-      weglassen — sonst fehlen `pytest` und `httpx2`, und der nächste Punkt
-      schlägt fehl. Windows-Hinweis zur `pip`-Variante: Falls
-      `.venv\Scripts\Activate.ps1` blockiert wird, einmalig
+      Das `--extra dev` nicht weglassen — sonst fehlen `pytest` und `httpx2`,
+      und der nächste Punkt schlägt fehl. Bei diesem Weg bekommen alle
+      weiteren Befehle ein `uv run` davor.
+
+      **Variante B – mit `pip`:**
+      ```powershell
+      python -m venv .venv
+      .venv\Scripts\Activate.ps1        # Windows PowerShell
+      # source .venv/bin/activate       # Linux/macOS
+      pip install -e ".[dev]"
+      ```
+      Falls `Activate.ps1` blockiert wird, einmalig
       `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` ausführen.
+
+      Warum eine eigene Umgebung: Ohne sie landet alles im System-Python —
+      und `pytest` findet dort womöglich ein fremdes, das grün meldet,
+      obwohl im Projekt nichts installiert ist.
 - [ ] Tests laufen durch:
       ```bash
-      pytest
+      uv run pytest      # Variante A
+      pytest             # Variante B, in der aktivierten Umgebung
       ```
       Erwartung: `6 passed`
 - [ ] Anwendung startet:
       ```bash
-      uvicorn src.api:app --reload
+      uv run uvicorn src.api:app --reload    # Variante A
+      uvicorn src.api:app --reload           # Variante B
       ```
       `http://127.0.0.1:8000/health` antwortet mit `{"status": "ok"}`
       (beim ersten Start ggf. den Windows-Firewall-Dialog bestätigen)
 
-## Zusätzlich für Gruppe B (frei: den Agenten selbst erweitern)
-
-- [ ] Mindestens eines der Starter-READMEs einmal gelesen —
-      `.opencode/commands/`, `.opencode/skills/`, `.opencode/agents/`,
-      `.opencode/plugins/` oder `mcp-starter/`
 - [ ] Subagent wird erkannt:
       ```bash
       opencode agent list
@@ -97,14 +111,16 @@ nicht erst kurz vor dem Termin.
       In der Ausgabe muss `reviewer (subagent)` stehen, neben den
       eingebauten Agenten `build`, `plan`, `explore` und `general`.
       Das geht ohne API-Key.
-- [ ] `mcp-starter/`-Abhängigkeiten installiert:
+- [ ] `mcp-starter/`-Abhängigkeiten installiert — in dieselbe Umgebung wie oben:
       ```bash
-      pip install -r mcp-starter/requirements.txt
+      uv pip install -r mcp-starter/requirements.txt    # Variante A
+      pip install -r mcp-starter/requirements.txt       # Variante B, in der aktivierten Umgebung
       ```
       läuft ohne Fehler durch
 - [ ] MCP-Server lässt sich lokal starten/testen:
       ```bash
-      mcp dev mcp-starter/server_komplett.py
+      uv run mcp dev mcp-starter/server_komplett.py    # Variante A
+      mcp dev mcp-starter/server_komplett.py           # Variante B
       ```
       Bewusst die Komplett-Version: `server_template.py` enthält noch
       offene TODOs und lässt sich erst starten, wenn ihr sie ausgefüllt
@@ -119,7 +135,8 @@ Ihr seid startklar, wenn:
 - ✅ Die App unter `http://127.0.0.1:8000/health` antwortet
 - ✅ `opencode models` zeigt euer AIHub-Modell — dann ist alles bereit und
   es fehlt nur noch der echte Key
-- ✅ (Gruppe B) `mcp dev` öffnet den MCP-Inspector im Browser
+- ✅ `opencode agent list` zeigt `reviewer (subagent)`
+- ✅ `mcp dev` öffnet den MCP-Inspector im Browser
 
 ## Am Workshop-Tag
 

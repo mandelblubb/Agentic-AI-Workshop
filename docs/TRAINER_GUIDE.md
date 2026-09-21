@@ -11,9 +11,12 @@ Fehler korrigieren und seine eigene Änderung reviewen kann.
 Der Workshop läuft parallel in zwei Gruppen, damit unterschiedliches technisches
 Niveau nicht zum Problem wird:
 
-- **Gruppe A – App bauen (geführt).** Vorgegebene Tickets (`issues/ISSUE-01` → `ISSUE-02` →
-  Bonus) mit dem Coding Agenten umsetzen. Für weniger CLI-/Agenten-erfahrene
-  Teilnehmende. Läuft nach den unten stehenden Zeitplänen.
+- **Gruppe A – App bauen.** Die Planungs-App mit dem Coding Agenten
+  weiterentwickeln. Der vorbereitete Ticket-Weg (`issues/ISSUE-01` → `ISSUE-02`
+  → Bonus) ist der empfohlene Einstieg und das, was die Zeitpläne unten
+  beschreiben — aber kein Muss: Wer eine eigene Funktion bauen will, tut das,
+  idealerweise nach einem Ticket aus `docs/CUSTOM_ISSUE_PROMPT.md`. Für
+  weniger CLI-/Agenten-erfahrene Teilnehmende.
 - **Gruppe B – Werkzeuge bauen (frei).** Eigene OpenCode Custom Commands (`.opencode/commands/`),
   Skills (`.opencode/skills/`) und einen eigenen MCP-Server (`mcp-starter/`)
   für die Anwendung entwickeln. Für technisch erfahrene Teilnehmende, kein
@@ -178,9 +181,10 @@ Erwartung im Ausgangszustand:
 ```
 
 Teilnehmenden-Checkliste vorab verschicken: `docs/SETUP_CHECKLIST.md`
-(Python, Git, Node, OpenCode, `pytest`, für Gruppe B zusätzlich
-`mcp-starter/`) — idealerweise vor dem Termin ausfüllen lassen, nicht erst
-live. Der AIHub-Key ist bewusst **nicht** Teil der Vorbereitung: Er wird zu
+(Python, Git, Node, OpenCode, `pytest`, `mcp-starter/`) — für beide Gruppen
+gleich, weil die Gruppenwahl erst vor Ort fällt und Pairing über
+Gruppengrenzen sonst nicht geht. Idealerweise vor dem Termin ausfüllen
+lassen, nicht erst live. Der AIHub-Key ist bewusst **nicht** Teil der Vorbereitung: Er wird zu
 Beginn des Workshops verteilt.
 
 ## Empfohlener Prompt für ISSUE-01
@@ -215,13 +219,20 @@ Beobachtungspunkt unten.
   schon lösen würden?
 - Testet er das neue Tool/Command wirklich gegen die laufende App, oder
   bleibt es ungetestet?
-- Hält sich ein selbst gebauter Command an die `allowed-tools`-Leitplanke,
-  oder räumt er sich mehr Rechte ein, als für die Aufgabe nötig?
+- Läuft ein selbst gebauter Command über einen Subagenten mit engen Rechten
+  (`agent:`), oder mit den vollen Rechten des Hauptagenten? Ein Feld
+  `allowed-tools` gibt es in OpenCode nicht — wer es einträgt, hat nichts
+  abgesichert, glaubt es aber.
 - Bei selbst gebauten Skills: Formulieren die Teilnehmenden eine `description`,
   die tatsächlich trifft — und lädt der Agent den Skill danach erkennbar von
   selbst, ohne dass man explizit danach fragt?
 
 ## ISSUE-02 als Überraschung
+
+Gilt nur für Gruppen auf dem Ticket-Weg. Wer eine eigene Funktion baut,
+bekommt kein ISSUE-02 — dort lässt sich derselbe Effekt erzielen, indem ihr
+nach der ersten fertigen Funktion fragt: *„Was steht in eurer Fehlermeldung,
+wenn etwas schiefgeht — und wer darf das lesen?"*
 
 Nach der ersten vermeintlich fertigen Implementierung:
 
