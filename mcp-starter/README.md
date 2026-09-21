@@ -60,7 +60,7 @@ Damit euer Coding Agent den Server als Werkzeug nutzen kann, muss er in
 ```json
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "aihub/qwen-3.8-27b-sovereign",
+  "model": "aihub/qwen-3.6-35b-sovereign",
   "mcp": {
     "convention-app-tools": {
       "type": "local",

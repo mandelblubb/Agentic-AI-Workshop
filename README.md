@@ -114,7 +114,7 @@ Zugangsproblem (`team not allowed to access model`), ist aber keines. Modell
 in dem Fall beim Aufruf erzwingen:
 
 ```bash
-opencode run -m aihub/qwen-3.8-27b-sovereign "..."
+opencode run -m aihub/qwen-3.6-35b-sovereign "..."
 ```
 
 ## Installation
