@@ -5,12 +5,14 @@ Zum Kopieren in euer E-Mail-Programm. Anhang: das kuratierte Teilnehmenden-ZIP
 
 ---
 
-**Betreff:** Vorbereitung Workshop "Agentische Softwareentwicklung" — bitte vor dem Termin lesen
+**Betreff:** Vorbereitung Workshop "Einführung in agentische 
+Softwareentwicklung" — bitte vor dem Termin lesen
 
 Hallo zusammen,
 
 im Anhang findet ihr alle Unterlagen für den Workshop
-"Agentische Softwareentwicklung" am [DATUM, UHRZEIT, ORT].
+"Einführung in agentische 
+Softwareentwicklung" am 24.09.2026 von 10:30-12:30.
 
 **Bitte vor dem Termin:**
 
@@ -40,9 +42,10 @@ gesetzt werden muss.
 
 Bei Fragen jederzeit melden.
 
-Bis zum [DATUM]!
+Viele Grüße
 
-[Name/Team]
+Dr. Immo Weber BMI KI-Campus der Polizei (ext.)
+Thomas Kukofka BMI KI-Campus der Polizei (ext.
 
 ---
 
