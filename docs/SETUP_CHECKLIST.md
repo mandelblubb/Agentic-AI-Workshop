@@ -28,6 +28,10 @@ bei allen dasselbe läuft.
   - Windows: `winget install Python.Python.3.12`
   - macOS: meist schon vorhanden, sonst `brew install python3`
   - Linux: `sudo apt install python3` (oder das Äquivalent eurer Distribution)
+
+  `pip` ist bei Windows/macOS automatisch dabei. **Debian/Ubuntu-Linux:**
+  `python3` bringt `pip` **nicht** mit — zusätzlich `sudo apt install
+  python3-pip` ausführen, sonst schlägt Variante B unten fehl.
 - [ ] Git installiert (`git --version`)
   - Windows: `winget install Git.Git`
   - macOS: `brew install git`
@@ -70,6 +74,14 @@ bei allen dasselbe läuft.
 - [ ] Abhängigkeiten installiert — **einer** der beiden Wege, nicht beide:
 
       **Variante A – mit `uv`:**
+
+      `uv` ist ein eigenständiges Tool, kommt **nicht** mit Python mit —
+      falls noch nicht installiert:
+      - Windows: `winget install --id=astral-sh.uv -e`
+      - macOS: `brew install uv`
+      - Linux/universell: `curl -LsSf https://astral.sh/uv/install.sh | sh`
+        oder `pip install uv`
+
       ```bash
       uv sync --extra dev
       ```
