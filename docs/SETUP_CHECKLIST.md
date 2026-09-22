@@ -63,7 +63,7 @@ bei allen dasselbe läuft.
       ```bash
       opencode models
       ```
-      In der Ausgabe muss eine Zeile `aihub/qwen-3.8-27b-sovereign` stehen.
+      In der Ausgabe muss eine Zeile `aihub/qwen-3.6-35b-sovereign` stehen.
       Dann ist die `opencode.json` korrekt und es fehlt wirklich nur noch
       der Key.
 - [ ] Workshop-Repository entpackt bzw. geklont, im Terminal geöffnet
